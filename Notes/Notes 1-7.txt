@@ -1,0 +1,83 @@
+Notes 1-7 Game Design
+
+-source paths are in script: of catergories
+-class paths must also be added to flash develop
+	project -> properties
+
+as3 language reference: AS3LR (Documentation)
+
+Check out custom search engines for firefox
+
+coding standards:
+
+asdoc - if your code comments are to spec, asdoc will parse the code for you into a html doc
+
+f4 on class definition to jump to the class, shift f4 to return
+
+look into code snippits for easy documentation
+
+snippits are posted on blog post to be linked (also contains standards)
+
+underscore means private variable?
+
+$ implies function parameter (use in function parameter definitions)
+
+next assignment implement coding standards
+
+prefix public variables with this
+
+as3 signals: 
+
+-download zip from github
+-copy org to src->classes
+-import signal in code file
+-a signal is a way for a child to make an announcement
+-must be declared as variable of type Signal
+(public var mySignal :Signal = new Signal();
+-replace trace calls with this
+
+ex
+
+dispatch() announce event
+add a listener to variable/class that cares to do something about the announced event
+
+this.playbuttonclickedsignal.dispatch() ->sends the signal
+->dispatch was added inside the function called by a standard event
+
+this.playbuttonclickedsignal.add(fucntionname)->adds a signal handler
+if you wnat to stop listening instead of add, remove
+
+when you change visibility the thing that loses visibility should have a cleanup function that is called
+
+-function parameters can be passed in signals
+-parameter type should be added to parameter list in new declaration
+
+__________________________________________________________________
+**remember to add destroy functions
+
+control 1 to add import
+
+
+Enter frame event -> added to event listener
+this.addEventListener(Event.theevent, fucntion to call)
+
+in handler function: ex
+if(keyboardmanager.instance.iskeydown(keycode.right)
+{
+	move the hero
+}
+
+
+
+this.mcCoin = new Coin() to add new object to memory
+in game screen -> this.addChild(mcCoin);
+
+
+Vector.<Coin> -> generic array of specific type, runs slower than array
+
+
+Collision:
+-add event listener
+this.mcHero.hitTestObject(Object to check for collision against)
+
+titlescreen->gamescreen play->here control for assignment 2
