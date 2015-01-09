@@ -24,7 +24,7 @@ $ implies function parameter (use in function parameter definitions)
 
 next assignment implement coding standards
 
-prefix public variables with this
+prefix public variables with "this"
 
 as3 signals: 
 
