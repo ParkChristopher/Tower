@@ -15,7 +15,8 @@ package
 	 */
 	public class Main extends MovieClip
 	{
-		public var mcTitleScreen :MovieClip;
+		public var mcTitleScreen	:MovieClip;
+		public var mcGameScreen		:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -41,6 +42,7 @@ package
 		{
 			trace("Main: Play clicked. Transitioning to GameScreen");
 			//start game screen
+			mcTitleScreen.visible = false;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

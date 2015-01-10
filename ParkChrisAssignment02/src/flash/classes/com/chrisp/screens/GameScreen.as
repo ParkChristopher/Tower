@@ -1,15 +1,16 @@
 package com.chrisp.screens
 {
-	import flash.display.Sprite;
-
-	
+	import flash.display.MovieClip;
+	import com.chrisp.objects.entities.Hero;
 	/**
 	 * Provides first floor of the game.
 	 * 
 	 * @author Chris Park
 	 */
-	public class GameScreen extends Sprite
+	public class GameScreen extends MovieClip
 	{
+		
+		public var mcHero		:Hero;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -24,18 +25,7 @@ package com.chrisp.screens
 			this.mouseChildren	= false;
 		}
 		
-		
 		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Initializes everything for this object.
-		 */
-		public function begin():void
-		{
-			
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */		
 		
 		/**
 		 * Relinquishes all memory used by this object.
@@ -47,6 +37,28 @@ package com.chrisp.screens
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Initializes everything for this object.
+		 */
+		public function begin():void
+		{
+			
+		}
+		
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Cleans up resources used by this object
+		 */
+		public function end():void
+		{
+			
+		}
+		/* ---------------------------------------------------------------------------------------- */		
+		
+		
 		
 	}
 }

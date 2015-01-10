@@ -13,8 +13,8 @@ package com.chrisp.screens
 	
 	public class TitleScreen extends MovieClip
 	{
-		public var btPlay :SimpleButton;
-		public var sigPlay :Signal = new Signal();
+		public var btPlay 		:SimpleButton;
+		public var sigPlay 		:Signal = new Signal();
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -35,7 +35,6 @@ package com.chrisp.screens
 		 */
 		private function playClicked($e:MouseEvent):void
 		{
-			this.visible = false;
 			this.sigPlay.dispatch();
 		}
 		
