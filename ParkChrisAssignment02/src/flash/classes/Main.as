@@ -5,18 +5,19 @@ package
 	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
+	import org.osflash.signals.Signal;
 	
 	
 	/**
 	 * Drives the project.
 	 * 
-	 * @author	Nate Chatellier
+	 * @author	Chris Park
 	 */
 	public class Main extends MovieClip
 	{
+		public var mcTitleScreen :MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
-		public var TitleScreen :MovieClip;
 		
 		/**
 		 * Constructs the Main object.
@@ -27,8 +28,21 @@ package
 			
 			// start your stuff here
 			trace("it's working");
+			
+			mcTitleScreen.sigPlay.add(playClicked);
 		}
-
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Stops any resources and transitions to GameScreen.
+		 */
+		public function playClicked()
+		{
+			trace("Main: Play clicked. Transitioning to GameScreen");
+			//start game screen
+		}
+		
 		/* ---------------------------------------------------------------------------------------- */
 
 	}

@@ -5,7 +5,8 @@ package com.chrisp.screens
 	import flash.events.MouseEvent;
 	import org.osflash.signals.Signal;
 	/**
-	 * ...
+	 * Controls the game flow and transitions between screens.
+	 * 
 	 * @author Chris Park
 	 */
 	
@@ -13,21 +14,42 @@ package com.chrisp.screens
 	public class TitleScreen extends MovieClip
 	{
 		public var btPlay :SimpleButton;
-		public var sigPlayClicked :Signal = new Signal();
+		public var sigPlay :Signal = new Signal();
 		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Constructs the TitleScreen object.
+		 */
 		public function TitleScreen()
 		{
-			this.sigPlayClicked.add(playClicked);
-			this.btPlay.addEventListener(MouseEvent.CLICK, playClicked);	
+			super();
+			
+			this.btPlay.addEventListener(MouseEvent.CLICK, playClicked);
 		}
 	
-		private function playClicked(e:MouseEvent):void
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Transitions to the game screen.
+		 */
+		private function playClicked($e:MouseEvent):void
 		{
-			this.sigPlayClicked.dispatch();
-			trace("Play");
+			this.visible = false;
+			this.sigPlay.dispatch();
 		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Releases all resources used by the class.
+		 */
+		public function destroy():void
+		{
+			
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 	}
-	
-	
-	
 }
