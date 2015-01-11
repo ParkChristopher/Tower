@@ -1,9 +1,9 @@
 package com.chrisp.objects.entities
 {
+	import flash.events.Event;
 	import com.natejc.input.KeyboardManager;
 	import com.natejc.input.KeyCode;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
+	
 
 	/**
 	 * Dictates the functionality and information for a hero character
@@ -12,7 +12,7 @@ package com.chrisp.objects.entities
 	 */
 	public class Hero extends A_Entity
 	{
-		private var MOVEMENT_SPEED = 3; 
+		private var MOVEMENT_SPEED = 3;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -21,34 +21,102 @@ package com.chrisp.objects.entities
 		 */
 		public function Hero()
 		{
-			super();
-			
-			this.addEventListener(Event.ENTER_FRAME, checkForAction);
+			super("Hero", 100);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Moves the player.
+		 * Initializes the Hero object.
+		 */
+		public function begin():void
+		{
+			this.visible = true;
+		}
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Ends and stops the Hero object.
+		 */
+		public function end():void
+		{
+			this.visible = false;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Checks for events from the player.
 		 * 
 		 * @param	$e	ENTER_FRAME event.
 		 */
 		public function checkForAction($e:Event):void
 		{
 			if (KeyboardManager.instance.isKeyDown(KeyCode.D))
-				this.x += MOVEMENT_SPEED;
+				moveRight();
 				
 			if (KeyboardManager.instance.isKeyDown(KeyCode.A))
-				this.x -= MOVEMENT_SPEED;
+				moveLeft();
 				
 			if (KeyboardManager.instance.isKeyDown(KeyCode.W))
-				this.y -= MOVEMENT_SPEED;
+				moveUp();
 				
 			if (KeyboardManager.instance.isKeyDown(KeyCode.S))
-				this.y += MOVEMENT_SPEED;
+				moveDown();
 		}
 				
 		/* ---------------------------------------------------------------------------------------- */
-	
+		
+		/**
+		 * Moves the player to the right.
+		 */
+		private function moveRight():void
+		{
+			if (this.x > stage.stageWidth - (this.width * 0.5))
+				return;
+				
+			this.x += MOVEMENT_SPEED;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Moves the player to the left.
+		 */
+		private function moveLeft():void
+		{
+			if (this.x - (this.width * 0.5) <= 0)
+				return;
+				
+			this.x -= MOVEMENT_SPEED;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Moves the player to the up.
+		 */
+		private function moveUp():void
+		{
+			if (this.y - (this.height * 0.5) <= 0)
+				return;
+				
+			this.y -= MOVEMENT_SPEED;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Moves the player to the down.
+		 */
+		private function moveDown():void
+		{
+			if (this.y > stage.stageHeight - (this.height * 0.5))
+				return;
+				
+			this.y += MOVEMENT_SPEED;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
 	}
 }

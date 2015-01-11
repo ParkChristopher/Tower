@@ -1,25 +1,25 @@
-package com.chrisp.objects.entities
+package com.chrisp.objects.items
 {
 	import flash.display.MovieClip;
+
 	
 	/**
-	 * Base abstraction class for Entities
+	 * Base abstraction class for Items
 	 * 
 	 * @author Chris Park
 	 */
-	public class A_Entity extends MovieClip
+	public class A_Item extends MovieClip
 	{
-		public var sName		:String;
-		public var nHealth		:Number;
+		public var sName :String;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Constructs the A_Entity object.
-		 * @param	$name 		Entity name.
-		 * @param	$health	Entity health value.
+		 * Constructs the Item object.
+		 * 
+		 * @param	$name		Item name.
 		 */
-		public function A_Entity($name:String, $health:Number)
+		public function A_Item($name:String)
 		{
 			super();
 			
@@ -27,13 +27,12 @@ package com.chrisp.objects.entities
 			this.mouseChildren	= false;
 			
 			this.sName = $name;
-			this.nHealth = $health;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		
 		
 		/**
-		 * Frees all memory used by this object.
+		 * Relinquishes all memory used by this object.
 		 */
 		public function destroy():void
 		{
