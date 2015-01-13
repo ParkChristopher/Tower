@@ -65,7 +65,7 @@ package com.chrisp.screens
 		 */
 		public function end():void
 		{
-			this.mcHero.removeEventListener(Event.ENTER_FRAME, mcHero.checkForAction)
+			this.mcHero.removeEventListener(Event.ENTER_FRAME, mcHero.checkForAction);
 			this.mcHero.end();
 			
 			this.mcGhost.end();
