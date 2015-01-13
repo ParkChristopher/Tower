@@ -1,0 +1,32 @@
+Code Structure:
+
+Signals defined as "signalNameSignal"
+
+scaleX scaleY change size of 
+
+1 + Math.rand() * max - min; (Range)
+
+if a class needs access to the stage 
+
+get Stageref Class - put in com/natejc/utils
+
+in main contructor call StageRef.stage = this.stage;
+
+can use this to get an instance of stage from anywhere by calling
+StageRef.stage; (its a get property)
+
+
+to add things to the stage:
+
+in gamescreen
+for loop
+
+next assignment:
+
+set up inheritence for game objects and game screens
+
+	
+screen base class
+show
+hide
+complete
