@@ -42,8 +42,6 @@ package com.chrisp.screens
 		{
 			this.visible = true;
 			this.btEndGame.addEventListener(MouseEvent.CLICK, gameEnded);
-			this.mcHero.addEventListener(Event.ENTER_FRAME, mcHero.checkForAction);
-			
 			this.mcHero.begin();
 			this.mcGhost.begin();
 			this.mcPotion.begin();
@@ -58,11 +56,9 @@ package com.chrisp.screens
 		{
 			
 			this.btEndGame.removeEventListener(MouseEvent.CLICK, gameEnded);
-			this.mcHero.removeEventListener(Event.ENTER_FRAME, mcHero.checkForAction);
-			
-			//this.mcHero.end();
-			//this.mcGhost.end();
-			//this.mcPotion.end();
+			this.mcHero.end();
+			this.mcGhost.end();
+			this.mcPotion.end();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

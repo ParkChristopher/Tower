@@ -1,5 +1,6 @@
 package com.chrisp.objects.items
 {
+	import com.chrisp.objects.AbstractGameObject;
 	import flash.display.MovieClip;
 
 	
@@ -8,9 +9,8 @@ package com.chrisp.objects.items
 	 * 
 	 * @author Chris Park
 	 */
-	public class AbstractItem extends MovieClip
+	public class AbstractItem extends AbstractGameObject
 	{
-		public var sName :String;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -21,26 +21,11 @@ package com.chrisp.objects.items
 		 */
 		public function AbstractItem($name:String)
 		{
-			super();
-			
-			this.mouseEnabled	= false;
-			this.mouseChildren	= false;
-			
-			this.sName = $name;
+			super($name);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		
-		
-		/**
-		 * Relinquishes all memory used by this object.
-		 */
-		public function destroy():void
-		{
-			while (this.numChildren > 0)
-				this.removeChildAt(0);
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
+	
 	}
 }
 

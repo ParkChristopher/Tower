@@ -21,23 +21,5 @@ package com.chrisp.objects.items
 		
 		/* ---------------------------------------------------------------------------------------- */		
 		
-		/**
-		 * Initializes the potion object.
-		 */
-		public function begin():void
-		{
-			this.visible = true;
-		}
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Ends and stops the potion object.
-		 */
-		public function end():void
-		{
-			this.visible = false;
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
 	}
 }

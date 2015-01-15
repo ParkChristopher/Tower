@@ -1,5 +1,6 @@
 package com.chrisp.objects.entities
 {
+	import com.chrisp.objects.IGameObject;
 	
 	/**
 	 * Dictates the functionality and information for a ghost enemy.
@@ -17,26 +18,6 @@ package com.chrisp.objects.entities
 		public function Ghost()
 		{
 			super("Ghost", 20);
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Initializes the Ghost object.
-		 */
-		public function begin()
-		{
-				this.visible = true;
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Ends and stops the Ghost object.
-		 */
-		public function end()
-		{
-				this.visible = false;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

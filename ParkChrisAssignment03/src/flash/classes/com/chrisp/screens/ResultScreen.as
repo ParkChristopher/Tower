@@ -57,8 +57,8 @@ package com.chrisp.screens
 		 */
 		public function returnToTitle($e:MouseEvent)
 		{
-			this.screenCompleteSignal.dispatch();
 			this.end();
+			this.screenCompleteSignal.dispatch();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

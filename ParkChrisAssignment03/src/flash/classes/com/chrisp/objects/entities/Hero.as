@@ -12,7 +12,7 @@ package com.chrisp.objects.entities
 	 */
 	public class Hero extends AbstractEntity
 	{
-		private var MOVEMENT_SPEED = 3;
+		private static var MOVEMENT_SPEED			:Number = 3;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -26,25 +26,23 @@ package com.chrisp.objects.entities
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		/**
-		 * Initializes the Hero object.
-		 */
-		public function begin():void
+		override public function begin():void
 		{
+			this.addEventListener(Event.ENTER_FRAME, checkForAction);
 			this.visible = true;
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Ends and stops the Hero object.
+		 * Ends and stops this class.
 		 */
-		public function end():void
+		override public function end():void
 		{
+			this.removeEventListener(Event.ENTER_FRAME, checkForAction);
 			this.visible = false;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
-		
 		/**
 		 * Checks for events from the player.
 		 * 

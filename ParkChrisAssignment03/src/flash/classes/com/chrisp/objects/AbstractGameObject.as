@@ -8,22 +8,24 @@ package com.chrisp.objects
 	 * 
 	 * @author Chris Park
 	 */
-	public class AbstractGameObject extends MovieClip
+	public class AbstractGameObject extends MovieClip implements IGameObject
 	{
+	
+		public var sName :String;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * Constructs the AbstractGameObject object.
 		 */
-		public function AbstractGameObject()
+		public function AbstractGameObject($sName:String)
 		{
 			super();
 			
 			this.mouseEnabled	= false;
 			this.mouseChildren	= false;
 			
-			
+			this.sName = $sName;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		
@@ -39,6 +41,24 @@ package com.chrisp.objects
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+				/**
+		 * Initializes this class.
+		 */
+		public function begin():void
+		{
+			this.visible = true;
+		}
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Ends and stops this class.
+		 */
+		public function end():void
+		{
+			this.visible = false;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
 	}
 }
 

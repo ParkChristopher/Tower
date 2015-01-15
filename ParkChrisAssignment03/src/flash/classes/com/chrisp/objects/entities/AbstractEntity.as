@@ -1,5 +1,7 @@
 package com.chrisp.objects.entities
 {
+	import com.chrisp.objects.AbstractGameObject;
+	import com.chrisp.objects.IGameObject;
 	import flash.display.MovieClip;
 	
 	/**
@@ -7,9 +9,8 @@ package com.chrisp.objects.entities
 	 * 
 	 * @author Chris Park
 	 */
-	public class AbstractEntity extends MovieClip
+	public class AbstractEntity extends AbstractGameObject
 	{
-		public var sName		:String;
 		public var nHealth		:Number;
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -21,7 +22,7 @@ package com.chrisp.objects.entities
 		 */
 		public function AbstractEntity($name:String, $health:Number)
 		{
-			super();
+			super($name);
 			
 			this.mouseEnabled	= false;
 			this.mouseChildren	= false;
@@ -32,16 +33,6 @@ package com.chrisp.objects.entities
 		
 		/* ---------------------------------------------------------------------------------------- */		
 		
-		/**
-		 * Frees all memory used by this object.
-		 */
-		public function destroy():void
-		{
-			while (this.numChildren > 0)
-				this.removeChildAt(0);
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
 	}
 }
 
