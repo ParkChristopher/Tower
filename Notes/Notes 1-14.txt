@@ -8,3 +8,58 @@ eventually,
 
 credits button, how to play/controls button
 
+using tweenmax for enemy movement?
+
+General syntax for tween:
+tweenmax.to(this, timetotween {x, y, effect, effect);
+tweenmax.to(this, timetotween {x, y, effect, effect);
+
+to stop a tween:
+tweenmax.killtweensof(this); - all tweens killed
+tweenmax.killtweensof();
+
+
+
+tweens return a variable of the instance they effect
+ease:
+OnComplete:
+
+
+full docs are online
+
+this.object1.hitTestObject(object2)
+
+more specific collision boxes
+
+make collision boxes for hero smaller
+weapons larger
+
+draw square -> use obtuse color that you will never use for anything else.
+make it a new movie clip called objectHitbox
+place in correct timeline for object you want hitbox for
+
+hit test against hitbox
+
+add graphics to a symbols timeline
+
+
+put hitbox variable in abstract game object
+
+
+Scoring:
+change text type from static to dynamic in properties
+->allows instancing in code
+dashed lin box around text is dynamic
+
+embedd your font:
+-> click embed in character section
+-> choose only what you need to imbed
+this.variablename.text = whatever value;
+toggle selectable off.
+
+adding stuff:
+anything you add needs to be removed
+addonce will remove itself after its done
+
+don't forget to typecast number to string for score.
+
