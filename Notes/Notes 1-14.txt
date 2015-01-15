@@ -1,0 +1,10 @@
+1-14-15 Notes
+
+New tool: tweenmax as3
+
+next assignment, animated title screen.
+
+eventually,
+
+credits button, how to play/controls button
+
