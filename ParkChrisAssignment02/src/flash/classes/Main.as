@@ -12,6 +12,7 @@ package
 	{
 		public var mcTitleScreen	:MovieClip;
 		public var mcGameScreen		:MovieClip;
+		public var mcResultScreen	:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

@@ -1,6 +1,5 @@
 package com.chrisp.screens
 {
-	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	import org.osflash.signals.Signal;
@@ -10,10 +9,10 @@ package com.chrisp.screens
 	 * 
 	 * @author Chris Park
 	 */
-	public class TitleScreen extends MovieClip
+	public class TitleScreen extends BaseScreen
 	{
 		public var btPlay 		:SimpleButton;
-		public var sigPlay 		:Signal = new Signal();
+		public var playSignal 		:Signal = new Signal();
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -26,21 +25,11 @@ package com.chrisp.screens
 			
 			this.btPlay.addEventListener(MouseEvent.CLICK, playClicked);
 		}
-	
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Releases all resources used by the class.
-		 */
-		public function destroy():void
-		{
-			
-		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Initializes the title screen.
+		 * Initializes this screen.
 		 */
 		public function begin():void
 		{
@@ -50,7 +39,7 @@ package com.chrisp.screens
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Ends use of the title screen.
+		 * Ends use of this screen.
 		 */
 		public function end():void
 		{
@@ -66,10 +55,9 @@ package com.chrisp.screens
 		 */
 		private function playClicked($e:MouseEvent):void
 		{
-			this.sigPlay.dispatch();
+			this.playSignal.dispatch();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
-		
 	}
 }

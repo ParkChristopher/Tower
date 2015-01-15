@@ -12,6 +12,7 @@ package
 	{
 		public var mcTitleScreen	:MovieClip;
 		public var mcGameScreen		:MovieClip;
+		public var mcResultScreen	:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -21,9 +22,14 @@ package
 		public function Main()
 		{
 			KeyboardManager.init(this.stage);
-			this.mcTitleScreen.sigPlay.add(startGame);
+			
+			this.mcGameScreen.screenCompleteSignal.add(startResults);
+			this.mcTitleScreen.screenCompleteSignal.add(startGame);
+			this.mcResultScreen.screenCompleteSignal.add(startTitle);
+			
 			this.mcTitleScreen.begin();
 			this.mcGameScreen.end();
+			this.mcResultScreen.end();
 			
 			trace("Main: Initialized.");
 		}
@@ -41,6 +47,28 @@ package
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Stops any resources and transitions to TitleScreen
+		 */
+		public function startTitle()
+		{
+			trace("Main: Return to title clicked. Transitioning to TitleScreen");
+			this.mcResultScreen.end();
+			this.mcTitleScreen.begin();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Stops any resources and transitions to ResultScreen
+		 */
+		public function startResults()
+		{
+			trace("Main: Game ended. Transitioning to ResultScreen");
+			this.mcGameScreen.end();
+			this.mcResultScreen.begin();
+		}
 	}
 }
 

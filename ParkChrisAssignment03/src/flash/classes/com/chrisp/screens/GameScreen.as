@@ -1,11 +1,11 @@
 package com.chrisp.screens
 {
-	
-	import flash.display.MovieClip;
-	import flash.events.Event;
 	import com.chrisp.objects.entities.Ghost;
 	import com.chrisp.objects.entities.Hero;
 	import com.chrisp.objects.items.Potion;
+	import flash.display.SimpleButton;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	
 	/**
 	 * Provides first floor of the game, and listend for events
@@ -13,12 +13,13 @@ package com.chrisp.screens
 	 * 
 	 * @author Chris Park
 	 */
-	public class GameScreen extends MovieClip
+	public class GameScreen extends AbstractScreen
 	{
 		
 		public var mcHero		:Hero;
 		public var mcGhost		:Ghost;
 		public var mcPotion		:Potion;
+		public var btEndGame	:SimpleButton;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -28,20 +29,8 @@ package com.chrisp.screens
 		public function GameScreen()
 		{
 			super();
-			
-			this.mouseEnabled	= false;
-			this.mouseChildren	= false;
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Relinquishes all memory used by this object.
-		 */
-		public function destroy():void
-		{	
-			while (this.numChildren > 0)
-				this.removeChildAt(0);
+			this.mouseEnabled	= true;
+			this.mouseChildren	= true;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -49,11 +38,13 @@ package com.chrisp.screens
 		/**
 		 * Initializes everything for this object.
 		 */
-		public function begin():void
+		override public function begin():void
 		{
-			this.mcHero.begin();
+			this.visible = true;
+			this.btEndGame.addEventListener(MouseEvent.CLICK, gameEnded);
 			this.mcHero.addEventListener(Event.ENTER_FRAME, mcHero.checkForAction);
 			
+			this.mcHero.begin();
 			this.mcGhost.begin();
 			this.mcPotion.begin();
 		}
@@ -63,15 +54,31 @@ package com.chrisp.screens
 		/**
 		 * Cleans up resources used by this object
 		 */
-		public function end():void
+		override public function end():void
 		{
-			this.mcHero.removeEventListener(Event.ENTER_FRAME, mcHero.checkForAction)
-			this.mcHero.end();
 			
-			this.mcGhost.end();
-			this.mcPotion.end();
+			this.btEndGame.removeEventListener(MouseEvent.CLICK, gameEnded);
+			this.mcHero.removeEventListener(Event.ENTER_FRAME, mcHero.checkForAction);
+			
+			//this.mcHero.end();
+			//this.mcGhost.end();
+			//this.mcPotion.end();
 		}
-		/* ---------------------------------------------------------------------------------------- */	
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Signals that the game has ended.
+		 * 
+		 * @param	$e MouseEvent.
+		 */
+		public function gameEnded($e:MouseEvent)
+		{
+			this.screenCompleteSignal.dispatch();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 	}
 }
 

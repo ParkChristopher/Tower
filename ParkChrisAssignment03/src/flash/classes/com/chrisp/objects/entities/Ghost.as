@@ -6,7 +6,7 @@ package com.chrisp.objects.entities
 	 * 
 	 * @author Chris Park
 	 */
-	public class Ghost extends A_Entity
+	public class Ghost extends AbstractEntity
 	{
 		
 		/* ---------------------------------------------------------------------------------------- */

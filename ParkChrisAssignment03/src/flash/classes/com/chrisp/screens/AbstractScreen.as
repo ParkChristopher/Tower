@@ -1,29 +1,36 @@
 package com.chrisp.screens
 {
-	import flash.display.SimpleButton;
-	import flash.events.MouseEvent;
+	import flash.display.MovieClip;
 	import org.osflash.signals.Signal;
 	
 	/**
-	 * Controls the game flow and transitions between screens.
+	 * Base class for screens.
 	 * 
 	 * @author Chris Park
 	 */
-	public class TitleScreen extends AbstractScreen
+	public class AbstractScreen extends MovieClip
 	{
-		public var btPlay 			:SimpleButton;
+		public var screenCompleteSignal	:Signal = new Signal();
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Constructs the TitleScreen object.
+		 * Constructs the BaseScreen object.
 		 */
-		public function TitleScreen()
+		public function AbstractScreen()
 		{
 			super();
-			
-			this.mouseEnabled	= true;
-			this.mouseChildren	= true;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Relinquishes all memory used by this object.
+		 */
+		public function destroy():void
+		{
+			while (this.numChildren > 0)
+				this.removeChildAt(0);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -31,10 +38,9 @@ package com.chrisp.screens
 		/**
 		 * Initializes this screen.
 		 */
-		override public function begin():void
+		public function begin():void
 		{
 			this.visible = true;
-			this.btPlay.addEventListener(MouseEvent.CLICK, playClicked);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -42,23 +48,14 @@ package com.chrisp.screens
 		/**
 		 * Ends use of this screen.
 		 */
-		override public function end():void
+		public function end():void
 		{
+			this.screenCompleteSignal.dispatch();
 			this.visible = false;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		/**
-		 * Signals that the play button has been clicked.
-		 * 
-		 * @param	$e		MouseEvent.
-		 */
-		private function playClicked($e:MouseEvent):void
-		{
-			this.screenCompleteSignal.dispatch();
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
 	}
 }
+

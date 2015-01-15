@@ -10,7 +10,7 @@ package com.chrisp.objects.entities
 	 * 
 	 * @author Chris Park
 	 */
-	public class Hero extends A_Entity
+	public class Hero extends AbstractEntity
 	{
 		private var MOVEMENT_SPEED = 3;
 		

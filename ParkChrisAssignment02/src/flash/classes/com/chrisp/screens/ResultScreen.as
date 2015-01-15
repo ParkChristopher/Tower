@@ -1,37 +1,38 @@
-package com.chrisp.objects.items
+package com.chrisp.screens
 {
 	
 	/**
-	 * Base abstraction class for Items
+	 * Shows relevant results of a play of the game.
 	 * 
 	 * @author Chris Park
 	 */
-	public class Potion extends AbstractItem
+	public class ResultScreen extends BaseScreen
 	{
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Constructs the Potion object.
+		 * Constructs the ResultScreen object.
 		 */
-		public function Potion()
+		public function ResultScreen()
 		{
-			super("Potion");
+			super();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		
 		
 		/**
-		 * Initializes the potion object.
+		 * Initializes this screen.
 		 */
 		public function begin():void
 		{
 			this.visible = true;
 		}
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Ends and stops the potion object.
+		 * Ends use of this screen.
 		 */
 		public function end():void
 		{
@@ -39,5 +40,7 @@ package com.chrisp.objects.items
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
 	}
 }
+

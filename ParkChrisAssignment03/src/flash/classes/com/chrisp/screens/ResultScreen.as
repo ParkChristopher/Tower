@@ -1,32 +1,32 @@
 package com.chrisp.screens
 {
-	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	import org.osflash.signals.Signal;
+	import flash.display.SimpleButton;
 	
 	/**
-	 * Controls the game flow and transitions between screens.
+	 * Shows relevant results of a play of the game.
 	 * 
 	 * @author Chris Park
 	 */
-	public class TitleScreen extends AbstractScreen
+	public class ResultScreen extends AbstractScreen
 	{
-		public var btPlay 			:SimpleButton;
+		
+		public var btReturn			:SimpleButton;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Constructs the TitleScreen object.
+		 * Constructs the ResultScreen object.
 		 */
-		public function TitleScreen()
+		public function ResultScreen()
 		{
 			super();
-			
 			this.mouseEnabled	= true;
 			this.mouseChildren	= true;
 		}
 		
-		/* ---------------------------------------------------------------------------------------- */
+		/* ---------------------------------------------------------------------------------------- */		
 		
 		/**
 		 * Initializes this screen.
@@ -34,7 +34,7 @@ package com.chrisp.screens
 		override public function begin():void
 		{
 			this.visible = true;
-			this.btPlay.addEventListener(MouseEvent.CLICK, playClicked);
+			this.btReturn.addEventListener(MouseEvent.CLICK, returnToTitle);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -45,20 +45,24 @@ package com.chrisp.screens
 		override public function end():void
 		{
 			this.visible = false;
+			this.btReturn.removeEventListener(MouseEvent.CLICK, returnToTitle);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Signals that the play button has been clicked.
+		 *  Signals ready for return to title screen.
 		 * 
 		 * @param	$e		MouseEvent.
 		 */
-		private function playClicked($e:MouseEvent):void
+		public function returnToTitle($e:MouseEvent)
 		{
 			this.screenCompleteSignal.dispatch();
+			this.end();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
 	}
 }
+

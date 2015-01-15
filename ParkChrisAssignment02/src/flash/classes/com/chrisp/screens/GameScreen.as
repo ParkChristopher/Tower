@@ -1,11 +1,9 @@
 package com.chrisp.screens
 {
-	
-	import flash.display.MovieClip;
-	import flash.events.Event;
 	import com.chrisp.objects.entities.Ghost;
 	import com.chrisp.objects.entities.Hero;
 	import com.chrisp.objects.items.Potion;
+	import flash.events.Event;
 	
 	/**
 	 * Provides first floor of the game, and listend for events
@@ -13,7 +11,7 @@ package com.chrisp.screens
 	 * 
 	 * @author Chris Park
 	 */
-	public class GameScreen extends MovieClip
+	public class GameScreen extends BaseScreen
 	{
 		
 		public var mcHero		:Hero;
@@ -28,20 +26,6 @@ package com.chrisp.screens
 		public function GameScreen()
 		{
 			super();
-			
-			this.mouseEnabled	= false;
-			this.mouseChildren	= false;
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Relinquishes all memory used by this object.
-		 */
-		public function destroy():void
-		{	
-			while (this.numChildren > 0)
-				this.removeChildAt(0);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -71,7 +55,8 @@ package com.chrisp.screens
 			this.mcGhost.end();
 			this.mcPotion.end();
 		}
-		/* ---------------------------------------------------------------------------------------- */	
+		
+		/* ---------------------------------------------------------------------------------------- */
 	}
 }
 
