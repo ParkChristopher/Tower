@@ -1,6 +1,7 @@
 package com.chrisp.objects.entities
 {
 	import com.chrisp.objects.AbstractGameObject;
+	import com.chrisp.objects.HitBox;
 	import flash.display.MovieClip;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
@@ -15,8 +16,8 @@ package com.chrisp.objects.entities
 		public var nHealth					:Number;
 		public var bActive					:Boolean = false;
 		public var movementTimer			:Timer;
-		public var readyToMoveSignal		:Signal = new Signal(AbstractEntity); 
-		
+		public var readyToMoveSignal		:Signal = new Signal(AbstractEntity);
+		public var objectHitBox				:HitBox;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

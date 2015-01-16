@@ -4,7 +4,7 @@ package com.chrisp.objects.entities
 	import com.natejc.input.KeyboardManager;
 	import com.natejc.input.KeyCode;
 	
-
+	//NOTE: Use bActive variable in base class to trigger invulnerability
 	/**
 	 * Dictates the functionality and information for a hero character
 	 * 
@@ -30,6 +30,7 @@ package com.chrisp.objects.entities
 		{
 			this.addEventListener(Event.ENTER_FRAME, checkForAction);
 			this.visible = true;
+			this.bActive = true;
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -40,6 +41,7 @@ package com.chrisp.objects.entities
 		{
 			this.removeEventListener(Event.ENTER_FRAME, checkForAction);
 			this.visible = false;
+			this.bActive = false;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
