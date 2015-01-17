@@ -17,7 +17,7 @@ package com.chrisp.objects.entities
 		public var bActive					:Boolean = false;
 		public var movementTimer			:Timer;
 		public var readyToMoveSignal		:Signal = new Signal(AbstractEntity);
-		public var objectHitBox				:HitBox;
+		
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

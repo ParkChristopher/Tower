@@ -14,7 +14,7 @@ package com.chrisp.objects.entities
 	public class Ghost extends AbstractEntity
 	{
 		public var MOVE_SPEED		:Number = 30;
-		public var mcHero 			:Hero;
+		//public var mcHitbox			:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

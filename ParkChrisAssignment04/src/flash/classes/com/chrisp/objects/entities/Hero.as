@@ -1,5 +1,6 @@
 package com.chrisp.objects.entities
 {
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import com.natejc.input.KeyboardManager;
 	import com.natejc.input.KeyCode;
@@ -13,6 +14,7 @@ package com.chrisp.objects.entities
 	public class Hero extends AbstractEntity
 	{
 		private const MOVEMENT_SPEED		:Number = 3;
+		//public var mcHitbox					:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -22,6 +24,7 @@ package com.chrisp.objects.entities
 		public function Hero()
 		{
 			super("Hero", 100);
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

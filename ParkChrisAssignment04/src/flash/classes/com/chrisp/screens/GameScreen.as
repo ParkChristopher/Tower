@@ -4,6 +4,7 @@ package com.chrisp.screens
 	import com.chrisp.objects.entities.Ghost;
 	import com.chrisp.objects.entities.Hero;
 	import flash.display.SimpleButton;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -20,6 +21,7 @@ package com.chrisp.screens
 		public var btEndGame			:SimpleButton;
 		public var vEnemies				:Vector.<AbstractEntity>;
 		public var spawnTimer			:Timer;
+		
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -46,6 +48,7 @@ package com.chrisp.screens
 			this.vEnemies = new Vector.<AbstractEntity>();
 			this.btEndGame.addEventListener(MouseEvent.CLICK, gameEnded);
 			
+			this.addEventListener(Event.ENTER_FRAME, checkCollision);
 			
 			this.spawnTimer = new Timer(3000 + Math.random() * 5000);
 			this.spawnTimer.addEventListener(TimerEvent.TIMER, spawnEnemy);
@@ -63,7 +66,7 @@ package com.chrisp.screens
 		 */
 		override public function end():void
 		{
-			
+			this.removeEventListener(Event.ENTER_FRAME, checkCollision);
 			this.btEndGame.removeEventListener(MouseEvent.CLICK, gameEnded);
 			this.spawnTimer.removeEventListener(TimerEvent.TIMER, spawnEnemy);
 			this.spawnTimer.stop();
@@ -123,6 +126,20 @@ package com.chrisp.screens
 		{
 			$enemy.move(mcHero);
 		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		public function checkCollision($e:Event)
+		{
+				for (var i:uint = 0; i < vEnemies.length; i++)
+				{
+					if (vEnemies[i].mcHitbox.hitTestObject(mcHero.mcHitbox))
+						trace("Collision! " + i);
+				}
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 	}
 }
 
