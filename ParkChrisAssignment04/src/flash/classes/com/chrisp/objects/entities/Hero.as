@@ -1,9 +1,11 @@
 package com.chrisp.objects.entities
 {
-	import flash.display.MovieClip;
-	import flash.events.Event;
+	import com.chrisp.objects.items.AbstractItem;
+	import com.chrisp.objects.items.Sword;
 	import com.natejc.input.KeyboardManager;
 	import com.natejc.input.KeyCode;
+	import flash.events.Event;
+	import org.osflash.signals.Signal;
 	
 	//NOTE: Use bActive variable in base class to trigger invulnerability
 	/**
@@ -13,9 +15,12 @@ package com.chrisp.objects.entities
 	 */
 	public class Hero extends AbstractEntity
 	{
-		private const MOVEMENT_SPEED		:Number = 3;
-		//public var mcHitbox					:MovieClip;
-		
+		/** Movement speed of Hero. */
+		private const MOVEMENT_SPEED		:Number = 4;
+		/** Weapon used to attack by the hero. */
+		private var mcSword					:Sword;	
+		/** Signals an attack to Game Screen*/
+		public var attackSignal				:Signal = new Signal(AbstractItem);
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -29,9 +34,16 @@ package com.chrisp.objects.entities
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Initializes the hero object.
+		 */
 		override public function begin():void
 		{
 			this.addEventListener(Event.ENTER_FRAME, checkForAction);
+			KeyboardManager.instance.addKeyDownListener(KeyCode.RIGHT, attackRight);
+			KeyboardManager.instance.addKeyDownListener(KeyCode.LEFT, attackLeft);
+			KeyboardManager.instance.addKeyDownListener(KeyCode.UP, attackUp);
+			KeyboardManager.instance.addKeyDownListener(KeyCode.DOWN, attackDown);
 			this.visible = true;
 			this.bActive = true;
 		}
@@ -43,6 +55,10 @@ package com.chrisp.objects.entities
 		override public function end():void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, checkForAction);
+			KeyboardManager.instance.removeKeyDownListener(KeyCode.RIGHT, attackRight);
+			KeyboardManager.instance.removeKeyDownListener(KeyCode.LEFT, attackLeft);
+			KeyboardManager.instance.removeKeyDownListener(KeyCode.UP, attackUp);
+			KeyboardManager.instance.removeKeyDownListener(KeyCode.DOWN, attackDown);
 			this.visible = false;
 			this.bActive = false;
 		}
@@ -65,9 +81,9 @@ package com.chrisp.objects.entities
 				moveUp();
 				
 			if (KeyboardManager.instance.isKeyDown(KeyCode.S))
-				moveDown();
+				moveDown();	
 		}
-				
+			
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -122,6 +138,50 @@ package com.chrisp.objects.entities
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Signals and creates a new attack right
+		 */
+		public function attackRight():void
+		{
+			mcSword = new Sword(this.x, this.y, "right");
+			attackSignal.dispatch(mcSword);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Signals and creates a new attack left
+		 */
+		public function attackLeft():void
+		{
+			mcSword = new Sword(this.x, this.y, "left");
+			attackSignal.dispatch(mcSword);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		
+		/**
+		 * Signals and creates a new attack up
+		 */
+		public function attackUp():void
+		{
+			mcSword = new Sword(this.x, this.y, "up");
+			attackSignal.dispatch(mcSword);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Signals and creates a new attack down
+		 */
+		public function attackDown():void
+		{
+			mcSword = new Sword(this.x, this.y, "down");
+			attackSignal.dispatch(mcSword);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
 		
 	}
 }

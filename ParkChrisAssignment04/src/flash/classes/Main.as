@@ -2,7 +2,11 @@ package
 {
 	import com.natejc.input.KeyboardManager;
 	import flash.display.MovieClip;
+	import com.natejc.utils.StageRef;
 	
+	//NOTE: -Abstract movement timers to base game object so it's universal
+	//-Abstract begin calls (super) in AbstractEntity heirarchy.
+	//-Abstract bActive to base game object for use with items.
 	/**
 	 * Drives the project.
 	 * 
@@ -10,8 +14,11 @@ package
 	 */
 	public class Main extends MovieClip
 	{
+		/** Title Screen */
 		public var mcTitleScreen	:MovieClip;
+		/** Game Screen */
 		public var mcGameScreen		:MovieClip;
+		/** Result Screen */
 		public var mcResultScreen	:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -22,6 +29,7 @@ package
 		public function Main()
 		{
 			KeyboardManager.init(this.stage);
+			StageRef.stage = this.stage;
 			
 			this.mcGameScreen.screenCompleteSignal.add(startResults);
 			this.mcTitleScreen.screenCompleteSignal.add(startGame);

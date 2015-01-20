@@ -10,9 +10,19 @@ package com.chrisp.objects
 	 */
 	public interface IGameObject
 	{
-		
+		/**
+		 * Initialization function for a game object.
+		 */
 		function begin():void;
+		
+		/**
+		 * Clean up for a game object.
+		 */
 		function end():void;
+		
+		/**
+		 * Resource freeing for a game object.
+		 */
 		function destroy():void;
 		
 		/* ---------------------------------------------------------------------------------------- */

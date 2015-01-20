@@ -13,9 +13,13 @@ package com.chrisp.screens
 	 */
 	public class TitleScreen extends AbstractScreen
 	{
+		/** Play Button */
 		public var btPlay 			:SimpleButton;
+		/** Tower Graphic */
 		public var mcTower			:MovieClip;
+		/** Cloud Graphic */
 		public var mcClouds			:MovieClip;
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**

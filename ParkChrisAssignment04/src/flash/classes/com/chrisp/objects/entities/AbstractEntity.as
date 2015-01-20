@@ -13,9 +13,13 @@ package com.chrisp.objects.entities
 	 */
 	public class AbstractEntity extends AbstractGameObject
 	{
+		/** Entity health */
 		public var nHealth					:Number;
+		/**Toggle for whether an Entity is active on the Game Screen or not. */
 		public var bActive					:Boolean = false;
+		/** Timer used to control Entity movement rate*/
 		public var movementTimer			:Timer;
+		/** Signal for when movement timer has triggered. */
 		public var readyToMoveSignal		:Signal = new Signal(AbstractEntity);
 		
 		
@@ -38,7 +42,7 @@ package com.chrisp.objects.entities
 			this.nHealth = $health;
 		}
 		
-		/* ---------------------------------------------------------------------------------------- */		
+		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * Determines movement of enemy

@@ -11,7 +11,7 @@ package com.chrisp.screens
 	 */
 	public class ResultScreen extends AbstractScreen
 	{
-		
+		/** Button to return to the title screen. */
 		public var btReturn			:SimpleButton;
 		
 		/* ---------------------------------------------------------------------------------------- */

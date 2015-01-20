@@ -11,8 +11,11 @@ package com.chrisp.objects
 	public class AbstractGameObject extends MovieClip implements IGameObject
 	{
 	
+		/** Game object name */
 		public var sName 			:String;
+		/** Game object Hitbox. */
 		public var mcHitbox			:MovieClip;
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**

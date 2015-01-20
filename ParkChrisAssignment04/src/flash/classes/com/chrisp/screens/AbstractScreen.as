@@ -10,6 +10,7 @@ package com.chrisp.screens
 	 */
 	public class AbstractScreen extends MovieClip
 	{
+		/** Signals that the screen has completed its intended purpose. */
 		public var screenCompleteSignal	:Signal = new Signal();
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -50,7 +51,6 @@ package com.chrisp.screens
 		 */
 		public function end():void
 		{
-			this.screenCompleteSignal.dispatch();
 			this.visible = false;
 		}
 		
