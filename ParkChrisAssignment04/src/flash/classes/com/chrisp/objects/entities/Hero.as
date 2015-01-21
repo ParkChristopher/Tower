@@ -105,7 +105,7 @@ package com.chrisp.objects.entities
 			if (this.x > stage.stageWidth - (this.width * 0.5))
 				return;
 				
-			this.x += MOVEMENT_SPEED;
+			this.x += this.MOVEMENT_SPEED;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -118,7 +118,7 @@ package com.chrisp.objects.entities
 			if (this.x - (this.width * 0.5) <= 0)
 				return;
 				
-			this.x -= MOVEMENT_SPEED;
+			this.x -= this.MOVEMENT_SPEED;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -131,7 +131,7 @@ package com.chrisp.objects.entities
 			if (this.y - (this.height * 0.5) <= 0)
 				return;
 				
-			this.y -= MOVEMENT_SPEED;
+			this.y -= this.MOVEMENT_SPEED;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -144,7 +144,7 @@ package com.chrisp.objects.entities
 			if (this.y > stage.stageHeight - (this.height * 0.5))
 				return;
 				
-			this.y += MOVEMENT_SPEED;
+			this.y += this.MOVEMENT_SPEED;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -154,8 +154,8 @@ package com.chrisp.objects.entities
 		 */
 		public function attackRight():void
 		{
-			mcSword = new Sword(this.x, this.y, "right");
-			attackSignal.dispatch(mcSword);
+			this.mcSword = new Sword(this.x, this.y, "right");
+			this.attackSignal.dispatch(mcSword);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -165,8 +165,8 @@ package com.chrisp.objects.entities
 		 */
 		public function attackLeft():void
 		{
-			mcSword = new Sword(this.x, this.y, "left");
-			attackSignal.dispatch(mcSword);
+			this.mcSword = new Sword(this.x, this.y, "left");
+			this.attackSignal.dispatch(mcSword);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -177,8 +177,8 @@ package com.chrisp.objects.entities
 		 */
 		public function attackUp():void
 		{
-			mcSword = new Sword(this.x, this.y, "up");
-			attackSignal.dispatch(mcSword);
+			this.mcSword = new Sword(this.x, this.y, "up");
+			this.attackSignal.dispatch(mcSword);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -188,8 +188,8 @@ package com.chrisp.objects.entities
 		 */
 		public function attackDown():void
 		{
-			mcSword = new Sword(this.x, this.y, "down");
-			attackSignal.dispatch(mcSword);
+			this.mcSword = new Sword(this.x, this.y, "down");
+			this.attackSignal.dispatch(mcSword);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

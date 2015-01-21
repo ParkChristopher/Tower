@@ -37,7 +37,7 @@ package com.chrisp.objects.entities
 		{
 			super.begin();
 			
-			bActive = true;
+			this.bActive = true;
 			this.movementTimer = new Timer(250 + Math.random() * 1000 );
 			this.movementTimer.addEventListener(TimerEvent.TIMER, actionReady);
 			this.movementTimer.start();

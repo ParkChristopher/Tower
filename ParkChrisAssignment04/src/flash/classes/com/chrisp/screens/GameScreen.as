@@ -39,8 +39,10 @@
 		public var itemTimer			:Timer;
 		/** Onscreen Score Display */
 		public var txtScore				:TextField;
+		/** Onscreen Health display*/
+		public var txtHealth			:TextField;
 		/** Numerical score */
-		public var iScore				:Number;
+		public var nScore				:Number;
 		
 		
 		
@@ -66,14 +68,12 @@
 		{
 			this.visible = true;
 			
-			this.iScore = 0;
-			this.txtScore.text = this.iScore.toString();
-			
+			this.nScore = 0;
+			this.txtScore.text = this.nScore.toString();
 			this.vEnemies = new Vector.<AbstractEntity>();
 			this.vHeroAttacks = new Vector.<AbstractItem>();
 			this.vItems = new Vector.<AbstractItem>();
 			
-			//this.btEndGame.addEventListener(MouseEvent.CLICK, gameEnded);
 			this.addEventListener(Event.ENTER_FRAME, checkCollision);
 			
 			this.spawnTimer = new Timer(750);
@@ -84,6 +84,7 @@
 			
 			spawnHero(480, 450);
 			this.mcHero.attackSignal.add(addHeroAttack);
+			this.txtHealth.text = this.mcHero.nHealth.toString();
 			this.spawnTimer.start();
 			this.itemTimer.start();
 		}
@@ -100,7 +101,6 @@
 			super.end();
 
 			this.removeEventListener(Event.ENTER_FRAME, checkCollision);
-			//this.btEndGame.removeEventListener(MouseEvent.CLICK, gameEnded);
 			
 			this.spawnTimer.removeEventListener(TimerEvent.TIMER, spawnEnemy);
 			this.spawnTimer.stop();
@@ -170,7 +170,7 @@
 			var ghost :Ghost = new Ghost();
 			
 			initEnemy(ghost);
-			vEnemies.push(ghost);
+			this.vEnemies.push(ghost);
 			this.addChild(ghost);
 			ghost.begin();
 		}
@@ -184,8 +184,8 @@
 		public function spawnHero($x:Number, $y:Number):void
 		{
 			this.mcHero = new Hero();
-			mcHero.x = $x;
-			mcHero.y = $y;
+			this.mcHero.x = $x;
+			this.mcHero.y = $y;
 			this.addChild(mcHero);
 			this.mcHero.begin();
 		}
@@ -201,7 +201,7 @@
 		{
 			var pickupItem	:Potion = new Potion();
 			this.addChild(pickupItem);
-			vItems.push(pickupItem);
+			this.vItems.push(pickupItem);
 			pickupItem.begin();
 		}
 		/* ---------------------------------------------------------------------------------------- */
@@ -211,7 +211,7 @@
 		 */
 		public function addHeroAttack($attackItem:AbstractItem):void
 		{	
-			vHeroAttacks.push($attackItem);
+			this.vHeroAttacks.push($attackItem);
 			this.addChild($attackItem);
 			$attackItem.begin();
 		}
@@ -343,6 +343,7 @@
 				{
 						trace("GameScreen: Collision! " + i);
 						this.mcHero.nHealth -= this.vEnemies[i].nAttackPower;
+						this.txtHealth.text = this.mcHero.nHealth.toString();
 						this.mcHero.becomeInvulnerable();
 						
 						trace("GameScreen: Hero Health: " + this.mcHero.nHealth);
@@ -365,8 +366,9 @@
 			{
 				if (this.mcHero.mcHitbox.hitTestObject(this.vItems[i].mcHitbox))
 				{
-					//NOTE: check for max health
+					//NOTE: check for max health after leveling system is in place.
 					this.mcHero.nHealth += this.vItems[i].nValue;
+					this.txtHealth.text = this.mcHero.nHealth.toString();
 					trace("GameScreen: Hero health +" + vItems[i].nValue);
 					this.vItems[i].bActive = false;
 				}
@@ -391,11 +393,11 @@
 						trace("GameScreen: Weapon " + i + " struck Enemy " + j);
 						this.vEnemies[j].nHealth -= this.vHeroAttacks[i].nAttackPower;
 						
-						if (vEnemies[j].nHealth <= 0)
+						if (this.vEnemies[j].nHealth <= 0)
 						{
-							vEnemies[j].bActive = false;
-							this.iScore += this.vEnemies[j].nValue;
-							this.txtScore.text = iScore.toString();
+							this.vEnemies[j].bActive = false;
+							this.nScore += this.vEnemies[j].nValue;
+							this.txtScore.text = this.nScore.toString();
 						}
 						this.vHeroAttacks[i].bActive = false;
 					}

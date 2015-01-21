@@ -11,7 +11,6 @@ package com.chrisp.objects
 	 */
 	public class AbstractGameObject extends MovieClip implements IGameObject
 	{
-	
 		/** Game object name */
 		public var sName 				:String;
 		/** Game object Hitbox. */
@@ -24,6 +23,7 @@ package com.chrisp.objects
 		public var nAttackPower			:Number = 0;
 		/** Value of the game object*/
 		public var nValue				:Number = 0;
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**

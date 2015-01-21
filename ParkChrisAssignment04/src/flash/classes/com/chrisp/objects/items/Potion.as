@@ -25,6 +25,9 @@ package com.chrisp.objects.items
 		
 		/* ---------------------------------------------------------------------------------------- */		
 		
+		/**
+		 * Initializes the potion.
+		 */
 		override public function begin():void
 		{
 			super.begin();
@@ -33,6 +36,9 @@ package com.chrisp.objects.items
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Cleans up potion activity.
+		 */
 		override public function end():void
 		{
 			super.end();

@@ -30,7 +30,7 @@ package com.chrisp.objects.items
 			
 			this.x = $startX;
 			this.y = $startY;
-			nAttackPower = 5;
+			this.nAttackPower = 5;
 			this.sDirection = $direction;
 			rotate();
 		}
@@ -87,7 +87,7 @@ package com.chrisp.objects.items
 		 */
 		public function move($e:TimerEvent):void
 		{	
-			if (sDirection == "right")
+			if (this.sDirection == "right")
 			{
 				if (this.x > StageRef.stage.width)
 				{
@@ -98,7 +98,7 @@ package com.chrisp.objects.items
 				this.x += MOVE_SPEED;
 			}
 			
-			if (sDirection == "left")
+			if (this.sDirection == "left")
 			{
 				if (this.x < 0)
 				{
@@ -109,7 +109,7 @@ package com.chrisp.objects.items
 				this.x -= MOVE_SPEED;
 			}
 			
-			if (sDirection == "up")
+			if (this.sDirection == "up")
 			{
 				if (this.y < 0)
 				{
@@ -120,7 +120,7 @@ package com.chrisp.objects.items
 				this.y -= MOVE_SPEED;
 			}
 			
-			if (sDirection == "down")
+			if (this.sDirection == "down")
 			{
 				if (this.y > StageRef.stage.height)
 				{
