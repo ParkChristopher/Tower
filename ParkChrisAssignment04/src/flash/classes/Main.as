@@ -4,9 +4,10 @@ package
 	import flash.display.MovieClip;
 	import com.natejc.utils.StageRef;
 	
-	//NOTE: -Abstract movement timers to base game object so it's universal
-	//-Abstract begin calls (super) in AbstractEntity heirarchy.
-	//-Abstract bActive to base game object for use with items.
+	//NOTE: Refactor AbstractGameObjects so vector generics can be used for
+	//strategy in a generic cleanup funciton
+	//-Potions stop spawning at random time after game starts.
+	
 	/**
 	 * Drives the project.
 	 * 
@@ -73,8 +74,10 @@ package
 		public function startResults():void
 		{
 			trace("Main: Game ended. Transitioning to ResultScreen");
+			this.mcResultScreen.updateScore(this.mcGameScreen.txtScore.text);
 			this.mcGameScreen.end();
 			this.mcResultScreen.begin();
+			
 		}
 	}
 }

@@ -1,14 +1,19 @@
-package com.chrisp.screens
+﻿package com.chrisp.screens
 {
+	import com.chrisp.objects.AbstractGameObject;
 	import com.chrisp.objects.entities.AbstractEntity;
 	import com.chrisp.objects.entities.Ghost;
 	import com.chrisp.objects.entities.Hero;
 	import com.chrisp.objects.items.AbstractItem;
+	import com.chrisp.objects.items.Potion;
+	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.text.TextField;
 	import flash.utils.Timer;
+	
 	
 	/**
 	 * Controls game flow.
@@ -21,13 +26,22 @@ package com.chrisp.screens
 		/** Hero object. */
 		public var mcHero				:Hero;
 		/** Temporary button to end the play cycle. */
-		public var btEndGame			:SimpleButton;
+		//public var btEndGame			:SimpleButton;
 		/** Vector that holds all enemies added to the Game Screen.*/
 		public var vEnemies				:Vector.<AbstractEntity>;
 		/**Vector that holds all attacks currently unleashed by the player. */
 		public var vHeroAttacks			:Vector.<AbstractItem>;
+		/**Vector that holds items obtainable by the hero. */
+		public var vItems				:Vector.<AbstractItem>;
 		/** Timer that triggers a new enemy spawn on the Game Screen.*/
 		public var spawnTimer			:Timer;
+		/** Timer that triggers the spawn of an item*/
+		public var itemTimer			:Timer;
+		/** Onscreen Score Display */
+		public var txtScore				:TextField;
+		/** Numerical score */
+		public var iScore				:Number;
+		
 		
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -52,19 +66,26 @@ package com.chrisp.screens
 		{
 			this.visible = true;
 			
+			this.iScore = 0;
+			this.txtScore.text = this.iScore.toString();
+			
 			this.vEnemies = new Vector.<AbstractEntity>();
 			this.vHeroAttacks = new Vector.<AbstractItem>();
+			this.vItems = new Vector.<AbstractItem>();
 			
-			this.btEndGame.addEventListener(MouseEvent.CLICK, gameEnded);
+			//this.btEndGame.addEventListener(MouseEvent.CLICK, gameEnded);
 			this.addEventListener(Event.ENTER_FRAME, checkCollision);
 			
-			this.spawnTimer = new Timer(3000 + Math.random() * 5000);
+			this.spawnTimer = new Timer(750);
 			this.spawnTimer.addEventListener(TimerEvent.TIMER, spawnEnemy);
 			
+			this.itemTimer = new Timer(5000);
+			this.itemTimer.addEventListener(TimerEvent.TIMER, spawnItem);
 			
 			spawnHero(480, 450);
 			this.mcHero.attackSignal.add(addHeroAttack);
 			this.spawnTimer.start();
+			this.itemTimer.start();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -79,9 +100,14 @@ package com.chrisp.screens
 			super.end();
 
 			this.removeEventListener(Event.ENTER_FRAME, checkCollision);
-			this.btEndGame.removeEventListener(MouseEvent.CLICK, gameEnded);
+			//this.btEndGame.removeEventListener(MouseEvent.CLICK, gameEnded);
+			
 			this.spawnTimer.removeEventListener(TimerEvent.TIMER, spawnEnemy);
 			this.spawnTimer.stop();
+			
+			this.itemTimer.removeEventListener(TimerEvent.TIMER, spawnItem);
+			this.itemTimer.stop();
+			
 			
 			this.mcHero.end();
 			this.removeChild(mcHero);
@@ -98,6 +124,13 @@ package com.chrisp.screens
 			{
 				this.vHeroAttacks[i].end();
 				this.removeChild(vHeroAttacks[i]);
+			}
+			
+			//Clean up any items
+			for (i = 0; i < vItems.length; i++)
+			{
+				this.vItems[i].end();
+				this.removeChild(vItems[i]);
 			}
 			
 		}
@@ -132,7 +165,7 @@ package com.chrisp.screens
 		 * Spawns enemies for the hero to battle with.
 		 * @param	$e	TimerEvent.
 		 */
-		public function spawnEnemy($e:TimerEvent)
+		public function spawnEnemy($e:TimerEvent):void
 		{
 			var ghost :Ghost = new Ghost();
 			
@@ -148,7 +181,7 @@ package com.chrisp.screens
 		 * @param	$x	Position x,	Number
 		 * @param	$y	Position y,	Number
 		 */
-		public function spawnHero($x:Number, $y:Number)
+		public function spawnHero($x:Number, $y:Number):void
 		{
 			this.mcHero = new Hero();
 			mcHero.x = $x;
@@ -159,12 +192,27 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		/** Adds a hero attack to vHeroAttacks for collision checks */
+		/**
+		 * Spawns an item for the hero to collect
+		 * 
+		 * @param	$e TimerEvent.
+		 */
+		public function spawnItem($e:TimerEvent):void
+		{
+			var pickupItem	:Potion = new Potion();
+			this.addChild(pickupItem);
+			vItems.push(pickupItem);
+			pickupItem.begin();
+		}
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Adds a hero attack to vHeroAttacks for collision checks 
+		 */
 		public function addHeroAttack($attackItem:AbstractItem):void
 		{	
 			vHeroAttacks.push($attackItem);
 			this.addChild($attackItem);
-			$attackItem.cleanupSignal.add(cleanupObjects);
 			$attackItem.begin();
 		}
 		
@@ -175,7 +223,7 @@ package com.chrisp.screens
 		 * 
 		 * @param	$enemy
 		 */
-		public function dispatchTarget($enemy:AbstractEntity)
+		public function dispatchTarget($enemy:AbstractEntity):void
 		{
 			$enemy.move(mcHero);
 		}
@@ -183,42 +231,98 @@ package com.chrisp.screens
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * checks for objects that need to be removed during play.
+		 * Cleans up enemies. To be replaced by generic cleanup function
 		 */
-		public function cleanupObjects():void
+		public function cleanupEnemies():void
 		{
-			var i	:uint;
-			var tempVector :Vector.<AbstractItem> = new Vector.<AbstractItem>();
+			var vTempVector		:Vector.<AbstractEntity> = new Vector.<AbstractEntity>();
 			
-			for (i = 0; i < vHeroAttacks.length; i++)
+			for (var i:uint = 0; i < this.vEnemies.length; i++)
 			{
-				if (vHeroAttacks[i].bActive == false)
+				if (!this.vEnemies[i].bActive)
 				{
-					this.removeChild(vHeroAttacks[i]);
+					if (this.contains(this.vEnemies[i]))
+					{
+						this.vEnemies[i].end();
+						this.removeChild(this.vEnemies[i]);
+					}
 				}
 				else
 				{
-					tempVector.push(vHeroAttacks[i]);
+					vTempVector.push(this.vEnemies[i]);
 				}
 			}
 			
-			vHeroAttacks = tempVector;
+			this.vEnemies = vTempVector;
 		}
 		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Cleans up swords. To be replaced with generic cleanup function
+		 */
+		public function cleanupSwords():void
+		{
+			var vTempVector :Vector.<AbstractItem> = new Vector.<AbstractItem>();
+			
+			for (var i:uint = 0; i < this.vHeroAttacks.length; i++)
+			{
+				if (!this.vHeroAttacks[i].bActive)
+				{
+					if (this.contains(this.vHeroAttacks[i]))
+					{
+						this.vHeroAttacks[i].end();
+						this.removeChild(this.vHeroAttacks[i]);
+					}
+				}
+				else
+				{
+					vTempVector.push(this.vHeroAttacks[i]);
+				}
+			}
+			
+			this.vHeroAttacks = vTempVector;
+		}
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Cleans up Items, to be replaced with generic.
+		 */
+		public function cleanupItems():void
+		{
+			var vTempVector	:Vector.<AbstractItem> = new Vector.<AbstractItem>();
+			
+			for (var i:uint = 0; i < this.vItems.length; i++)
+			{
+				if (!this.vItems[i].bActive)
+				{
+					if (this.contains(this.vItems[i]))
+					{
+						this.vItems[i].end();
+						this.removeChild(this.vItems[i]);
+					}
+				}
+				else
+				{
+					vTempVector.push(vItems[i]);
+				}
+			}
+			
+			this.vItems = vTempVector;
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * Checks game board for collisions.
+		 * 
 		 * @param	$e	ENTER_FRAME Event.
 		 */
-		public function checkCollision($e:Event)
+		public function checkCollision($e:Event):void
 		{
-				for (var i:uint = 0; i < vEnemies.length; i++)
-				{
-					if (vEnemies[i].mcHitbox.hitTestObject(mcHero.mcHitbox))
-						trace("Collision! " + i);
-				}
+			checkHeroCollision();
+			checkHeroAttackCollision();
+			checkItemCollision();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -226,13 +330,49 @@ package com.chrisp.screens
 		/**
 		 * Looks for a collision between the hero and an enemy.
 		 */
-		public function checkHeroCollision()
+		public function checkHeroCollision():void
 		{
-			//if hero is colliding with an enemey
-			//damage the hero with that enemies attack power
-			//if the hero's health <= 0
-			//destroy him
-			//end the game
+			
+			//Return if hero is invulnerable.
+			if (!this.mcHero.bActive)
+				return;
+			
+			for (var i:uint = 0; i < vEnemies.length; i++)
+			{
+				if (this.vEnemies[i].mcHitbox.hitTestObject(this.mcHero.mcHitbox))
+				{
+						trace("GameScreen: Collision! " + i);
+						this.mcHero.nHealth -= this.vEnemies[i].nAttackPower;
+						this.mcHero.becomeInvulnerable();
+						
+						trace("GameScreen: Hero Health: " + this.mcHero.nHealth);
+						if (this.mcHero.nHealth <= 0)
+							this.screenCompleteSignal.dispatch();
+						
+						break;
+				}
+			}
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Looks for a collision between the hero and an item.
+		 */
+		public function checkItemCollision():void
+		{
+			for (var i:uint = 0; i < vItems.length; i++)
+			{
+				if (this.mcHero.mcHitbox.hitTestObject(this.vItems[i].mcHitbox))
+				{
+					//NOTE: check for max health
+					this.mcHero.nHealth += this.vItems[i].nValue;
+					trace("GameScreen: Hero health +" + vItems[i].nValue);
+					this.vItems[i].bActive = false;
+				}
+			}
+			
+			cleanupItems();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -240,13 +380,31 @@ package com.chrisp.screens
 		/**
 		 * Checks if the Hero's attack connects with an enemy.
 		 */
-		public function checkHeroAttackCollision()
-		{
-			//check all enemeies for collision with attack.
-			//if a collision is found
-			//damage the entity
-			//remove instance of attack
-			//if entity health is <= 0 destroy it.
+		public function checkHeroAttackCollision():void
+		{		
+			for (var i:uint = 0; i < this.vHeroAttacks.length; i++)
+			{
+				for (var j:uint = 0; j < this.vEnemies.length; j++)
+				{
+					if (this.vHeroAttacks[i].hitTestObject(this.vEnemies[j]))
+					{
+						trace("GameScreen: Weapon " + i + " struck Enemy " + j);
+						this.vEnemies[j].nHealth -= this.vHeroAttacks[i].nAttackPower;
+						
+						if (vEnemies[j].nHealth <= 0)
+						{
+							vEnemies[j].bActive = false;
+							this.iScore += this.vEnemies[j].nValue;
+							this.txtScore.text = iScore.toString();
+						}
+						this.vHeroAttacks[i].bActive = false;
+					}
+				}
+			}
+			
+			cleanupSwords();
+			cleanupEnemies();
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

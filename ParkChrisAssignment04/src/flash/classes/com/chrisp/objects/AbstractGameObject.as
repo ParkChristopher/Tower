@@ -1,6 +1,7 @@
 package com.chrisp.objects
 {
 	import flash.display.MovieClip;
+	import flash.utils.Timer;
 
 	
 	/**
@@ -12,10 +13,17 @@ package com.chrisp.objects
 	{
 	
 		/** Game object name */
-		public var sName 			:String;
+		public var sName 				:String;
 		/** Game object Hitbox. */
-		public var mcHitbox			:MovieClip;
-		
+		public var mcHitbox				:MovieClip;
+		/** Movement timer for object*/
+		public var movementTimer		:Timer;
+		/** Toggles if an object is doing something. */
+		public var bActive				:Boolean = false;
+		/** Determines the attack power of a game object.*/
+		public var nAttackPower			:Number = 0;
+		/** Value of the game object*/
+		public var nValue				:Number = 0;
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**

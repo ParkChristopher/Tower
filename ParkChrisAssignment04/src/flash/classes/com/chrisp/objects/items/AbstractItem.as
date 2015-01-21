@@ -15,8 +15,7 @@ package com.chrisp.objects.items
 		
 		/** Signals the hero that weapon needs to be cleaned up.*/
 		public var cleanupSignal		:Signal = new Signal();
-		/** Toggle is sword is doing something.*/
-		public var bActive				:Boolean = false;
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -29,7 +28,21 @@ package com.chrisp.objects.items
 			super($name);
 		}
 		
-		/* ---------------------------------------------------------------------------------------- */		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function begin():void
+		{
+			super.begin();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function end():void
+		{
+			super.end();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
 		
 	}
 }

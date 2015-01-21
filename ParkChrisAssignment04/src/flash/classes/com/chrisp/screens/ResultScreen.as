@@ -1,6 +1,7 @@
 package com.chrisp.screens
 {
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
 	import org.osflash.signals.Signal;
 	import flash.display.SimpleButton;
 	
@@ -13,6 +14,8 @@ package com.chrisp.screens
 	{
 		/** Button to return to the title screen. */
 		public var btReturn			:SimpleButton;
+		/** Ending score display*/
+		public var txtResultScore	:TextField;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -59,6 +62,18 @@ package com.chrisp.screens
 		{
 			this.end();
 			this.screenCompleteSignal.dispatch();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Updates the end of game score.
+		 * 
+		 * @param	$score	String
+		 */
+		public function updateScore($score:String):void
+		{
+			this.txtResultScore.text = $score;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

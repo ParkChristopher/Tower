@@ -16,10 +16,6 @@ package com.chrisp.objects.items
 	{
 		/** Direction of travel. */
 		public var sDirection			:String;
-		/**Damage dealt by sword. */
-		public var nAttackPower			:Number = 10;
-		/** Timer used to control sword movement.*/
-		public var movementTimer		:Timer;
 		/** Movement speed of the sword.*/
 		public var MOVE_SPEED			:Number = 16;
 		
@@ -34,6 +30,7 @@ package com.chrisp.objects.items
 			
 			this.x = $startX;
 			this.y = $startY;
+			nAttackPower = 5;
 			this.sDirection = $direction;
 			rotate();
 		}
@@ -95,7 +92,6 @@ package com.chrisp.objects.items
 				if (this.x > StageRef.stage.width)
 				{
 					this.bActive = false;
-					this.cleanupSignal.dispatch();
 					return;
 				}
 				
@@ -107,7 +103,6 @@ package com.chrisp.objects.items
 				if (this.x < 0)
 				{
 					this.bActive = false;
-					this.cleanupSignal.dispatch();
 					return;
 				}
 				
@@ -119,7 +114,6 @@ package com.chrisp.objects.items
 				if (this.y < 0)
 				{
 					this.bActive = false;
-					this.cleanupSignal.dispatch();
 					return;
 				}
 				
@@ -131,7 +125,6 @@ package com.chrisp.objects.items
 				if (this.y > StageRef.stage.height)
 				{
 					this.bActive = false;
-					this.cleanupSignal.dispatch();
 					return;
 				}
 				
@@ -140,7 +133,6 @@ package com.chrisp.objects.items
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
-		
 	}
 }
 

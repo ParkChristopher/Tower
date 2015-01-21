@@ -1,5 +1,6 @@
 package com.chrisp.objects.items
 {
+	import com.natejc.utils.StageRef;
 	
 	/**
 	 * Base abstraction class for Items
@@ -17,9 +18,27 @@ package com.chrisp.objects.items
 		public function Potion()
 		{
 			super("Potion");
+			this.nValue = 50;
+			this.x = Math.random() * StageRef.stage.width;
+			this.y = Math.random() * StageRef.stage.height;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		
+		
+		override public function begin():void
+		{
+			super.begin();
+			this.bActive = true;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function end():void
+		{
+			super.end();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
 		
 	}
 }

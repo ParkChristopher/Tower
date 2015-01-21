@@ -14,7 +14,7 @@ package com.chrisp.objects.entities
 	public class Ghost extends AbstractEntity
 	{
 		/** Ghost movement speed. */
-		public var MOVE_SPEED		:Number = 30;
+		public var MOVE_SPEED		:Number = 35;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -24,6 +24,8 @@ package com.chrisp.objects.entities
 		public function Ghost()
 		{
 			super("Ghost", 20);
+			this.nAttackPower = 20;
+			this.nValue = 100;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -33,12 +35,14 @@ package com.chrisp.objects.entities
 		 */
 		override public function begin():void
 		{
+			super.begin();
+			
 			bActive = true;
-			this.movementTimer = new Timer(500 + Math.random() * 1500 );
+			this.movementTimer = new Timer(250 + Math.random() * 1000 );
 			this.movementTimer.addEventListener(TimerEvent.TIMER, actionReady);
 			this.movementTimer.start();
-			this.visible = true;
 			TweenMax.to(this, 2, {glowFilter:{color:0xffff99, alpha:1, blurX:15, blurY:20}, yoyo:true, repeat:-1});
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -48,7 +52,8 @@ package com.chrisp.objects.entities
 		 */
 		override public function end():void
 		{
-			this.visible = false;
+			super.end();
+			
 			this.bActive = false;
 			this.movementTimer.stop();
 			this.movementTimer.removeEventListener(TimerEvent.TIMER, actionReady);
