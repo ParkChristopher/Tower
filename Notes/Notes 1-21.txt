@@ -28,7 +28,7 @@ add() remove() take AbstractGameObject as a parameter
 
 types and collision allowances will be defined inside of the concrete classes/ game objects themselves
 
-getaddedobjectsoftype(takea string)
+getaddedobjectsoftype(takea string) (where is this?)
 
 static class gameObjecttypes
 
