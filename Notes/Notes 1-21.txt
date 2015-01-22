@@ -1,0 +1,210 @@
+Collision Manager:
+
+Be able to specify object type for each class
+Be able to pause /begin/ end collision checks
+
+Singleton in flash:
+
+singleton snippit is available
+
+private constructor not supported in as3
+
+need private static const _instance :CollisionManager = new cM(Singleton Lock)
+
+second class in col manager:
+
+class SingletonLock (no access modifier)
+
+class SingletonLock{} //does nothing
+
+
+only static funciton is the get instance function
+
+reset() //clear objects being tracked and prepare for use
+
+begin(), end()
+
+add() remove() take AbstractGameObject as a parameter
+
+types and collision allowances will be defined inside of the concrete classes/ game objects themselves
+
+getaddedobjectsoftype(takea string)
+
+static class gameObjecttypes
+
+variables
+public static const TYPE_1	:String = "ObjectType1"
+repeat variable declaration for each object type (be generic)
+
+collision stuff in its own folder
+
+in abstract game object:
+
+create protected string variable objectType
+
+getset property for objectType variable
+
+in each concrete class that is inherited set it's type from the static class
+
+this.objectType = GameObjectTypes.TYPE;
+
+______________________
+
+to tell objects what type of items they can collide with
+
+Associative array:
+
+-ACollidableObjectTypes[""] index will be an object type (array)
+(goes in abstract game object)
+
+public funciton addcollideswithtype(String gameobjecttype):void
+{
+	if(_acollidableobjecttypes.indexOf(parameter) < 0) (doesn't already exist, prevents duplicates
+	_aCollidableObjectTypes.push(parameter)
+}
+
+
+in each class constructor:
+
+add object type
+call addcollideswithtype(object type) for each object to check collision against
+(where is addcollideswithtype?)
+
+in collision manager:
+
+begin():
+
+-stageRef.stage.addeventlistener (this.testallcollision)
+
+end():
+
+-remove event listener
+
+
+testallcollisions:
+
+setting null on the parameter for an event function allows you to call it without a parameter
+
+
+multidimensional array:
+ 
+Array[objecttype][n]
+array[index] = new array to add second dimension for each index.
+
+need:
+array of objects being tracked
+
+Array = new Array() (now one dimensional)
+
+
+in add in collision manager:
+
+objectsofsametype :Array = objectsbeingtracked[gameobjecttype]
+if(objectsofsametype == null)
+	objectsofsametype = nwe array();
+
+objectsofsametype.push(gameObject parameter)
+Objectbeingtracked[gameobjecttype] = objectsofsametype;
+
+remove() in collision manager:
+
+var aObjectsofsametype:array = _aobjectsbeingtracked[gameobjecttype];
+
+if (aobjectsblahblah == null)
+	return;
+
+var nObjecttoberemovedindex:int = aobjectofsametype.indexOf(gameObject)
+
+if(nobjecttoberemoved >= 0)
+	aObjectsofSametype.splice(nobjectstoberemovedindex, 1);
+	ressaign to first dimension again.
+	 (where to start, how many indices to remove)
+_____________________________________________________________
+testallcollision:
+
+to traverse an associative array
+
+for in (snippit iterator type string, iterator name whatever)
+
+var aObjectsofSameType:Array;
+for(var sobjecttype:string in _AObjectsbeingtracked)
+{
+	aobjectsbeingtracked[sObjectype]
+	if(aobjectsofsametype is not null)
+	{
+		for(i = blah blah < aObjectsofs...length)
+		{
+			this.testCollisionforSingleObject(aObjectsofsametype[i]);
+		}
+
+	}
+}
+
+_____________________________________________________________
+new function::
+testCollisionforSingleObject(abstractGameObject):void
+{
+	var acollideswithtypes:array = parameter.getcollideswithtypes;
+	var aobjectstotestagainst:array;
+	var scollideswithtypeassociateivearrayindex:string;
+
+	for(i < acollideswithtypes.length)
+	{
+		scollideswithtypeassociativeArrayindex = acollideswithtypes[i];
+		aobjectstotestagainst = _aobjectsbeingtracked[scollideswithtypeassociativearrayindex];
+		for(j < objectstotestagainst.length;)
+		{
+			mcobjecttotestagainst = aobjectstotestagainst[i];
+			if($gameobject.hittestobject(mcObjecttoTestagainst))
+				gameobjec.collidedwith.(mcobjecttotestagainst);
+		}
+	}
+}
+____________________________________________________
+new function:
+getCollidesWithTypes():Array
+{
+	return _aCollidableObjecttypes
+}
+
+
+new function in gameobject:
+public function collided with($otherogameobject:AbstractObject):void
+{}
+________________________________________
+
+in abstractgameobject:
+
+getcollidable test object function
+
+if(this.mcHitTest)
+	return this.mchittest;
+
+return this;
+
+_______________________________________
+
+
+to handle the collisions:
+
+override collidewith in concrete class
+
+if($objectthatwascollidedwith is ClassType)
+	this.defeated();
+
+
+in gamescreen in begin function:
+
+Collisionmanager.instance.begin();
+
+end function:
+
+Collisionmanager.instance.end();
+
+______________________________________________
+
+in begin end of a concrete class:
+
+CollisionManager.instance.add(this); (can be done in abstract if you are sure all objects are going to need collision checks)
+
+after a collision has happened for a collectible, remove the instance
