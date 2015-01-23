@@ -13,6 +13,7 @@
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.utils.Timer;
+	import com.natejc.utils.StageRef;
 	
 	
 	/**
@@ -82,7 +83,7 @@
 			this.itemTimer = new Timer(5000);
 			this.itemTimer.addEventListener(TimerEvent.TIMER, spawnItem);
 			
-			spawnHero(480, 450);
+			spawnHero(StageRef.stage.stageWidth * 0.5, StageRef.stage.stageHeight * 0.75);
 			this.mcHero.attackSignal.add(addHeroAttack);
 			this.txtHealth.text = this.mcHero.nHealth.toString();
 			this.spawnTimer.start();
@@ -156,7 +157,7 @@
 		{
 			$enemy.readyToMoveSignal.add(dispatchTarget);
 			$enemy.x = Math.random() * this.stage.stageWidth;
-			$enemy.y = Math.random() * this.stage.stageHeight * 0.5;
+			$enemy.y = Math.random() * this.stage.stageHeight * 0.45;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

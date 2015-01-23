@@ -5,6 +5,7 @@ package com.chrisp.objects.items
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
+	import com.chrisp.collision.GameObjectType;
 
 	
 	/**
@@ -28,9 +29,12 @@ package com.chrisp.objects.items
 		{
 			super("sword");
 			
+			this._sObjectType = GameObjectType.TYPE_WEAPON;
+			addCollidableType(GameObjectType.TYPE_ENEMY);
+			
 			this.x = $startX;
 			this.y = $startY;
-			this.nAttackPower = 5;
+			this.nAttackPower = 8;
 			this.sDirection = $direction;
 			rotate();
 		}
@@ -89,7 +93,7 @@ package com.chrisp.objects.items
 		{	
 			if (this.sDirection == "right")
 			{
-				if (this.x > StageRef.stage.width)
+				if (this.x > StageRef.stage.stageWidth)
 				{
 					this.bActive = false;
 					return;
@@ -122,7 +126,7 @@ package com.chrisp.objects.items
 			
 			if (this.sDirection == "down")
 			{
-				if (this.y > StageRef.stage.height)
+				if (this.y > StageRef.stage.stageHeight)
 				{
 					this.bActive = false;
 					return;

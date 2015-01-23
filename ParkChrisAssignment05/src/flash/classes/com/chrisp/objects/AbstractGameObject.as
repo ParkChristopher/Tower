@@ -1,5 +1,6 @@
 package com.chrisp.objects
 {
+	import com.chrisp.collision.GameObjectType;
 	import flash.display.MovieClip;
 	import flash.utils.Timer;
 
@@ -25,6 +26,8 @@ package com.chrisp.objects
 		public var nValue				:Number = 0;
 		/** Object type used for collision detection. */
 		protected var _sObjectType		:String;
+		/** Array of objects this object can collide with */
+		protected var _aCanCollideWith	:Array = new Array();
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -80,19 +83,28 @@ package com.chrisp.objects
 		 * @param	$value	Set object collision type.
 		 * @return			Object collision type.
 		 */
-		public function get getset ():String
+		public function get objectType ():String
 		{
 			return _sObjectType;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		public function set ($value:String):void
+		public function set objectType ($value:String):void
 		{
 			_sObjectType = $value;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
+		public function addCollidableType($type:String):void
+		{
+			if (_aCanCollideWith.indexOf($type) < 0)
+				_aCanCollideWith.push($type);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		
 	}
 }

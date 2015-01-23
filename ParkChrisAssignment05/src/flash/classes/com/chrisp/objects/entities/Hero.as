@@ -8,6 +8,7 @@ package com.chrisp.objects.entities
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 	import org.osflash.signals.Signal;
+	import com.chrisp.collision.GameObjectType;
 	
 	//NOTE: Use bActive variable in base class to trigger invulnerability
 	/**
@@ -34,7 +35,9 @@ package com.chrisp.objects.entities
 		public function Hero()
 		{
 			super("Hero", 100);
-			
+			this._sObjectType = GameObjectType.TYPE_HERO;
+			addCollidableType(GameObjectType.TYPE_ENEMY);
+			addCollidableType(GameObjectType.TYPE_COLLECTIBLE);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

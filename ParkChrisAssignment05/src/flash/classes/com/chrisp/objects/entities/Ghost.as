@@ -5,6 +5,7 @@ package com.chrisp.objects.entities
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import com.chrisp.collision.GameObjectType;
 	
 	/**
 	 * Dictates the functionality and information for a ghost enemy.
@@ -26,6 +27,9 @@ package com.chrisp.objects.entities
 			super("Ghost", 20);
 			this.nAttackPower = 20;
 			this.nValue = 100;
+			this._sObjectType = GameObjectType.TYPE_ENEMY;
+			addCollidableType(GameObjectType.TYPE_HERO);
+			addCollidableType(GameObjectType.TYPE_WEAPON);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

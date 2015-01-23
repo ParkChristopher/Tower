@@ -1,6 +1,7 @@
 package com.chrisp.objects.items
 {
 	import com.natejc.utils.StageRef;
+	import com.chrisp.collision.GameObjectType;
 	
 	/**
 	 * Base abstraction class for Items
@@ -21,6 +22,8 @@ package com.chrisp.objects.items
 			this.nValue = 50;
 			this.x = Math.random() * StageRef.stage.width;
 			this.y = Math.random() * StageRef.stage.height;
+			this._sObjectType = GameObjectType.TYPE_COLLECTIBLE;
+			addCollidableType(GameObjectType.TYPE_HERO);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */		

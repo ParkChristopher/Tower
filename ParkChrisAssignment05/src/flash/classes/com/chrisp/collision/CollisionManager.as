@@ -1,7 +1,8 @@
 package 
 {
 	import com.chrisp.objects.AbstractGameObject;
-
+	import com.natejc.utils.StageRef;
+	import flash.events.Event;
 
 	/**
 	 * Manages collisions between game objects.
@@ -47,12 +48,16 @@ package
 		/* ---------------------------------------------------------------------------------------- */
 		
 		public function begin():void
-		{}
+		{
+			StageRef.stage.addEventListener(this.testCollision);
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		public function end():void
-		{}
+		{
+			StageRef.stage.removeEventListener(this.testCollision);
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -62,6 +67,11 @@ package
 		/* ---------------------------------------------------------------------------------------- */
 		
 		public function remove($object:AbstractGameObject):void
+		{}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		public function testCollision($e:Event = null):void
 		{}
 		
 		/* ---------------------------------------------------------------------------------------- */

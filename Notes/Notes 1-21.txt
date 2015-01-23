@@ -68,7 +68,7 @@ in each class constructor:
 
 add object type
 call addcollideswithtype(object type) for each object to check collision against
-(where is addcollideswithtype?)
+(where is addcollideswithtype? in abstract game object)
 
 in collision manager:
 
@@ -104,7 +104,7 @@ if(objectsofsametype == null)
 	objectsofsametype = nwe array();
 
 objectsofsametype.push(gameObject parameter)
-Objectbeingtracked[gameobjecttype] = objectsofsametype;
+Objectbeingtracked[gameobjecttype] = objectsofsametype; (this line might be unneccesary)
 
 remove() in collision manager:
 
@@ -118,7 +118,7 @@ var nObjecttoberemovedindex:int = aobjectofsametype.indexOf(gameObject)
 if(nobjecttoberemoved >= 0)
 	aObjectsofSametype.splice(nobjectstoberemovedindex, 1);
 	ressaign to first dimension again.
-	 (where to start, how many indices to remove)
+	 (PARAMETERS: where to start, how many indices to remove)
 _____________________________________________________________
 testallcollision:
 
