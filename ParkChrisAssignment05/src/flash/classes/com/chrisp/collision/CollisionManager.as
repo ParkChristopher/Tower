@@ -1,4 +1,4 @@
-package 
+package com.chrisp.collision
 {
 	import com.chrisp.objects.AbstractGameObject;
 	import com.natejc.utils.StageRef;
@@ -13,7 +13,8 @@ package
 	{
 		/** Stores a reference to the singleton instance. */  
 		private static const _instance	:CollisionManager = new CollisionManager( SingletonLock );
-		
+		/** Lists of objects checked for collision. */
+		protected var _aTrackedObjects	:Array = new Array();
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -62,16 +63,36 @@ package
 		/* ---------------------------------------------------------------------------------------- */
 		
 		public function add($object:AbstractGameObject):void
-		{}
+		{
+			var aObjectsOfSameType :Array = this._aTrackedObjects[$object.objectType];
+			
+			if (aObjectsOfSameType == null)
+				aObjectsOfSameType = new Array();
+			
+			aObjectsOfSameType.push($object);
+			this._aTrackedObjects[$object.objectType] = aObjectsOfSameType;
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		public function remove($object:AbstractGameObject):void
-		{}
+		{
+			var aObjectsOfSameType :Array = this._aTrackedObjects[$object.objectType];
+			
+			if (aObjectsOfSameType == null)
+				return;
+			
+			var nObjectRemoveIndex :int = aObjectsOfSameType.indexOf($object);
+			
+			if (nObjectRemoveIndex >= 0)
+				aObjectsOfSameType.splice(nObjectRemoveIndex, 1);
+				
+			this._aTrackedObjects[$object.objectType] = aObjectsOfSameType;
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		public function testCollision($e:Event = null):void
+		public function testCollisions($e:Event = null):void
 		{}
 		
 		/* ---------------------------------------------------------------------------------------- */
