@@ -2,6 +2,7 @@ package com.chrisp.collision
 {
 	import com.chrisp.objects.AbstractGameObject;
 	import com.natejc.utils.StageRef;
+	import flash.display.MovieClip;
 	import flash.events.Event;
 
 	/**
@@ -26,7 +27,6 @@ package com.chrisp.collision
 		{
 			if ($lock != SingletonLock)
 				throw new Error("CollisionManager is a singleton and should not be instantiated. Use CollisionManager.instance instead");
-			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -43,25 +43,41 @@ package com.chrisp.collision
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Resets the collision manager.
+		 */
 		public function reset():void
-		{}
+		{
+			this._aTrackedObjects = new Array();
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Starts the collision manager.
+		 */
 		public function begin():void
 		{
-			StageRef.stage.addEventListener(this.testCollision);
+			StageRef.stage.addEventListener(Event.ENTER_FRAME, this.testAllCollisions);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Ends the collision manager.
+		 */
 		public function end():void
 		{
-			StageRef.stage.removeEventListener(this.testCollision);
+			StageRef.stage.removeEventListener(Event.ENTER_FRAME, this.testAllCollisions);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Adds an object to the tracked collisions
+		 * 
+		 * @param	$object	AbstractGameObject.
+		 */
 		public function add($object:AbstractGameObject):void
 		{
 			var aObjectsOfSameType :Array = this._aTrackedObjects[$object.objectType];
@@ -71,12 +87,19 @@ package com.chrisp.collision
 			
 			aObjectsOfSameType.push($object);
 			this._aTrackedObjects[$object.objectType] = aObjectsOfSameType;
+			//trace("CollisionManager: Object added " + $object.objectType);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Removes an object from the tracked collisions
+		 * 
+		 * @param	$object AbstractGameObject.
+		 */
 		public function remove($object:AbstractGameObject):void
 		{
+			trace("CollisionManager: Remove entered.");
 			var aObjectsOfSameType :Array = this._aTrackedObjects[$object.objectType];
 			
 			if (aObjectsOfSameType == null)
@@ -85,15 +108,75 @@ package com.chrisp.collision
 			var nObjectRemoveIndex :int = aObjectsOfSameType.indexOf($object);
 			
 			if (nObjectRemoveIndex >= 0)
+			{
 				aObjectsOfSameType.splice(nObjectRemoveIndex, 1);
-				
+				trace("CollisionManager: Object removed " + $object.objectType);
+			}	
 			this._aTrackedObjects[$object.objectType] = aObjectsOfSameType;
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		public function testCollisions($e:Event = null):void
-		{}
+		/**
+		 * Tests collision for all tracked objects
+		 * 
+		 * @param	$e Stage instance event.
+		 */
+		public function testAllCollisions($e:Event):void
+		{
+			var aObjectsOfSameType	:Array;
+			
+			for (var sObjectType:String in _aTrackedObjects)
+			{
+				aObjectsOfSameType = _aTrackedObjects[sObjectType];
+				
+				if (aObjectsOfSameType != null)
+				{
+					for (var i:uint = 0; i < aObjectsOfSameType.length; i++)
+						this.testSingleCollision(aObjectsOfSameType[i]);
+					
+				}
+			}
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Tests collision for a single object
+		 * 
+		 * @param	$object AbstractGameObject.
+		 */
+		public function testSingleCollision($object:AbstractGameObject):void
+		{
+			var aCollidesWithTypes	:Array = $object.collidableTypes;
+			var aCollidesAgainst	:Array;
+			var sTypeIndex			:String;
+			var mcObjectInstance	:AbstractGameObject;
+			
+			for (var i:uint = 0; i < aCollidesWithTypes.length; i++)
+			{
+				sTypeIndex = aCollidesWithTypes[i];
+				
+				aCollidesAgainst = this._aTrackedObjects[sTypeIndex];
+				
+				if (aCollidesAgainst == null)
+					break;
+				
+				for (var j:uint = 0; j < aCollidesAgainst.length; j++)
+				{
+					mcObjectInstance = aCollidesAgainst[i];
+					
+					if (mcObjectInstance == null)
+						break;
+					
+					if ($object.hitTestObject(mcObjectInstance))
+						$object.collidedWith(mcObjectInstance);
+				}
+				
+				
+			}
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

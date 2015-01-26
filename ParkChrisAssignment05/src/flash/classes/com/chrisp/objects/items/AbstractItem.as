@@ -13,9 +13,6 @@ package com.chrisp.objects.items
 	public class AbstractItem extends AbstractGameObject
 	{
 		
-		/** Signals the hero that weapon needs to be cleaned up.*/
-		public var cleanupSignal		:Signal = new Signal();
-		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**

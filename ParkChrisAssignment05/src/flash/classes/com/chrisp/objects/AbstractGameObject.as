@@ -3,6 +3,7 @@ package com.chrisp.objects
 	import com.chrisp.collision.GameObjectType;
 	import flash.display.MovieClip;
 	import flash.utils.Timer;
+	import org.osflash.signals.Signal;
 
 	
 	/**
@@ -28,6 +29,8 @@ package com.chrisp.objects
 		protected var _sObjectType		:String;
 		/** Array of objects this object can collide with */
 		protected var _aCanCollideWith	:Array = new Array();
+		/** Signals for this object to be cleaned up*/
+		public var cleanupSignal		:Signal = new Signal(AbstractGameObject);
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -97,6 +100,23 @@ package com.chrisp.objects
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		public function get collidableTypes():Array
+		{
+			return _aCanCollideWith;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		public function getHitbox():MovieClip
+		{
+			if (this.mcHitbox != null)
+				return this.mcHitbox;
+				
+			return this;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		public function addCollidableType($type:String):void
 		{
 			if (_aCanCollideWith.indexOf($type) < 0)
@@ -104,6 +124,15 @@ package com.chrisp.objects
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
+		public function collidedWith($object:AbstractGameObject):void
+		{
+			//if object is collidable for this object
+			//respond
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		
 		
 	}

@@ -1,14 +1,16 @@
 package com.chrisp.objects.entities
 {
+	import com.chrisp.collision.GameObjectType;
+	import com.chrisp.objects.AbstractGameObject;
 	import com.chrisp.objects.items.AbstractItem;
 	import com.chrisp.objects.items.Sword;
 	import com.natejc.input.KeyboardManager;
 	import com.natejc.input.KeyCode;
 	import flash.events.Event;
-	import flash.utils.Timer;
 	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
-	import com.chrisp.collision.GameObjectType;
+	import com.chrisp.collision.CollisionManager;
 	
 	//NOTE: Use bActive variable in base class to trigger invulnerability
 	/**
@@ -22,8 +24,10 @@ package com.chrisp.objects.entities
 		private const MOVEMENT_SPEED		:Number = 4;
 		/** Weapon used to attack by the hero. */
 		private var mcSword					:Sword;	
-		/** Signals an attack to Game Screen*/
+		/** Signals an attack to Game Screen. */
 		public var attackSignal				:Signal = new Signal(AbstractItem);
+		/**Signals that the hero has died. */
+		public var heroDiedSignal			:Signal = new Signal();
 		/**Turns invulnerability off when triggered. */
 		public var invulnerabilityTimer		:Timer;
 		
@@ -215,6 +219,41 @@ package com.chrisp.objects.entities
 		{
 			this.invulnerabilityTimer.reset();
 			this.bActive = true;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function collidedWith($object:AbstractGameObject):void
+		{
+			trace("Hero: collided with " + $object.objectType);
+			
+			if ($object.objectType == GameObjectType.TYPE_ENEMY)
+			{
+				if (!this.bActive)
+					return;
+					
+				this.nHealth -= $object.nAttackPower;
+				becomeInvulnerable();
+				
+				trace("Hero health: " + this.nHealth);
+				
+				if (this.nHealth <= 0)
+					this.heroDiedSignal.dispatch();
+					
+			}
+				
+			if ($object.objectType == GameObjectType.TYPE_COLLECTIBLE)
+			{
+				trace("Hero: Collision");
+				if ($object.bActive)
+				{
+					$object.bActive = false;
+					this.nHealth += $object.nValue;
+					CollisionManager.instance.remove($object);
+					$object.cleanupSignal.dispatch($object);
+					trace("Hero: Hero health: " + this.nHealth.toString() );
+				}
+			}
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

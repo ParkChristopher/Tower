@@ -1,20 +1,19 @@
 ﻿package com.chrisp.screens
 {
+	import com.chrisp.collision.CollisionManager;
 	import com.chrisp.objects.AbstractGameObject;
 	import com.chrisp.objects.entities.AbstractEntity;
 	import com.chrisp.objects.entities.Ghost;
 	import com.chrisp.objects.entities.Hero;
 	import com.chrisp.objects.items.AbstractItem;
 	import com.chrisp.objects.items.Potion;
-	import flash.display.MovieClip;
-	import flash.display.SimpleButton;
+	import com.natejc.utils.StageRef;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.utils.Timer;
-	import com.natejc.utils.StageRef;
-	
+	import com.chrisp.collision.GameObjectType;
 	
 	/**
 	 * Controls game flow.
@@ -28,12 +27,12 @@
 		public var mcHero				:Hero;
 		/** Temporary button to end the play cycle. */
 		//public var btEndGame			:SimpleButton;
-		/** Vector that holds all enemies added to the Game Screen.*/
-		public var vEnemies				:Vector.<AbstractEntity>;
-		/**Vector that holds all attacks currently unleashed by the player. */
-		public var vHeroAttacks			:Vector.<AbstractItem>;
-		/**Vector that holds items obtainable by the hero. */
-		public var vItems				:Vector.<AbstractItem>;
+		/** Array that holds all enemies added to the Game Screen.*/
+		public var aEnemies				:Array;
+		/**Array that holds all attacks currently unleashed by the player. */
+		public var aHeroAttacks			:Array;
+		/**Array that holds items obtainable by the hero. */
+		public var aItems				:Array;
 		/** Timer that triggers a new enemy spawn on the Game Screen.*/
 		public var spawnTimer			:Timer;
 		/** Timer that triggers the spawn of an item*/
@@ -44,7 +43,6 @@
 		public var txtHealth			:TextField;
 		/** Numerical score */
 		public var nScore				:Number;
-		
 		
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -68,16 +66,18 @@
 		override public function begin():void
 		{
 			this.visible = true;
+			CollisionManager.instance.reset();
+			CollisionManager.instance.begin();
 			
 			this.nScore = 0;
 			this.txtScore.text = this.nScore.toString();
-			this.vEnemies = new Vector.<AbstractEntity>();
-			this.vHeroAttacks = new Vector.<AbstractItem>();
-			this.vItems = new Vector.<AbstractItem>();
+			this.aEnemies = new Array();
+			this.aHeroAttacks = new Array();
+			this.aItems = new Array();
 			
-			this.addEventListener(Event.ENTER_FRAME, checkCollision);
+			//this.addEventListener(Event.ENTER_FRAME, checkCollision);
 			
-			this.spawnTimer = new Timer(750);
+			this.spawnTimer = new Timer(10000);//Was 750
 			this.spawnTimer.addEventListener(TimerEvent.TIMER, spawnEnemy);
 			
 			this.itemTimer = new Timer(5000);
@@ -85,6 +85,7 @@
 			
 			spawnHero(StageRef.stage.stageWidth * 0.5, StageRef.stage.stageHeight * 0.75);
 			this.mcHero.attackSignal.add(addHeroAttack);
+			this.mcHero.heroDiedSignal.add(gameEnded);
 			this.txtHealth.text = this.mcHero.nHealth.toString();
 			this.spawnTimer.start();
 			this.itemTimer.start();
@@ -100,8 +101,7 @@
 			var i	:uint;
 			
 			super.end();
-
-			this.removeEventListener(Event.ENTER_FRAME, checkCollision);
+			CollisionManager.instance.end();
 			
 			this.spawnTimer.removeEventListener(TimerEvent.TIMER, spawnEnemy);
 			this.spawnTimer.stop();
@@ -114,24 +114,24 @@
 			this.removeChild(mcHero);
 			
 			//Clean up any enemies
-			for (i = 0; i < vEnemies.length; i++)
+			for (i = 0; i < aEnemies.length; i++)
 			{
-				this.vEnemies[i].end();
-				this.removeChild(vEnemies[i]);
+				this.aEnemies[i].end();
+				this.removeChild(aEnemies[i]);
 			}
 			
 			//Clean up any on screen attacks.
-			for (i = 0; i < vHeroAttacks.length; i++)
+			for (i = 0; i < aHeroAttacks.length; i++)
 			{
-				this.vHeroAttacks[i].end();
-				this.removeChild(vHeroAttacks[i]);
+				this.aHeroAttacks[i].end();
+				this.removeChild(aHeroAttacks[i]);
 			}
 			
 			//Clean up any items
-			for (i = 0; i < vItems.length; i++)
+			for (i = 0; i < aItems.length; i++)
 			{
-				this.vItems[i].end();
-				this.removeChild(vItems[i]);
+				this.aItems[i].end();
+				this.removeChild(aItems[i]);
 			}
 			
 		}
@@ -140,10 +140,8 @@
 		
 		/**
 		 * Signals that the game has ended.
-		 * 
-		 * @param	$e MouseEvent.
 		 */
-		public function gameEnded($e:MouseEvent):void
+		public function gameEnded():void
 		{
 			this.screenCompleteSignal.dispatch();
 		}
@@ -168,12 +166,15 @@
 		 */
 		public function spawnEnemy($e:TimerEvent):void
 		{
+			
 			var ghost :Ghost = new Ghost();
 			
 			initEnemy(ghost);
-			this.vEnemies.push(ghost);
+			CollisionManager.instance.add(ghost);
+			this.aEnemies.push(ghost);
 			this.addChild(ghost);
 			ghost.begin();
+			
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -187,6 +188,7 @@
 			this.mcHero = new Hero();
 			this.mcHero.x = $x;
 			this.mcHero.y = $y;
+			CollisionManager.instance.add(this.mcHero);
 			this.addChild(mcHero);
 			this.mcHero.begin();
 		}
@@ -200,21 +202,27 @@
 		 */
 		public function spawnItem($e:TimerEvent):void
 		{
-			var pickupItem	:Potion = new Potion();
+			var pickupItem	:AbstractGameObject = new Potion();
+			
+			CollisionManager.instance.add(pickupItem);
+			this.aItems.push(pickupItem);
 			this.addChild(pickupItem);
-			this.vItems.push(pickupItem);
+			pickupItem.cleanupSignal.add(cleanupObject);
 			pickupItem.begin();
 		}
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Adds a hero attack to vHeroAttacks for collision checks 
+		 * Adds a hero attack to aHeroAttacks for collision checks 
 		 */
-		public function addHeroAttack($attackItem:AbstractItem):void
+		public function addHeroAttack($attackItem:AbstractGameObject):void
 		{	
-			this.vHeroAttacks.push($attackItem);
+			CollisionManager.instance.add($attackItem);
+			this.aHeroAttacks.push($attackItem);
 			this.addChild($attackItem);
+			$attackItem.cleanupSignal.add(cleanupObject);
 			$attackItem.begin();
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -231,183 +239,48 @@
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		/**
-		 * Cleans up enemies. To be replaced by generic cleanup function
-		 */
-		public function cleanupEnemies():void
+		public function cleanupObject($object:AbstractGameObject):void
 		{
-			var vTempVector		:Vector.<AbstractEntity> = new Vector.<AbstractEntity>();
+			var tempArray	:Array;
 			
-			for (var i:uint = 0; i < this.vEnemies.length; i++)
+			if ($object.objectType == GameObjectType.TYPE_COLLECTIBLE)
 			{
-				if (!this.vEnemies[i].bActive)
-				{
-					if (this.contains(this.vEnemies[i]))
-					{
-						this.vEnemies[i].end();
-						this.removeChild(this.vEnemies[i]);
-					}
-				}
-				else
-				{
-					vTempVector.push(this.vEnemies[i]);
-				}
-			}
-			
-			this.vEnemies = vTempVector;
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Cleans up swords. To be replaced with generic cleanup function
-		 */
-		public function cleanupSwords():void
-		{
-			var vTempVector :Vector.<AbstractItem> = new Vector.<AbstractItem>();
-			
-			for (var i:uint = 0; i < this.vHeroAttacks.length; i++)
-			{
-				if (!this.vHeroAttacks[i].bActive)
-				{
-					if (this.contains(this.vHeroAttacks[i]))
-					{
-						this.vHeroAttacks[i].end();
-						this.removeChild(this.vHeroAttacks[i]);
-					}
-				}
-				else
-				{
-					vTempVector.push(this.vHeroAttacks[i]);
-				}
-			}
-			
-			this.vHeroAttacks = vTempVector;
-		}
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Cleans up Items, to be replaced with generic.
-		 */
-		public function cleanupItems():void
-		{
-			var vTempVector	:Vector.<AbstractItem> = new Vector.<AbstractItem>();
-			
-			for (var i:uint = 0; i < this.vItems.length; i++)
-			{
-				if (!this.vItems[i].bActive)
-				{
-					if (this.contains(this.vItems[i]))
-					{
-						this.vItems[i].end();
-						this.removeChild(this.vItems[i]);
-					}
-				}
-				else
-				{
-					vTempVector.push(vItems[i]);
-				}
-			}
-			
-			this.vItems = vTempVector;
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Checks game board for collisions.
-		 * 
-		 * @param	$e	ENTER_FRAME Event.
-		 */
-		public function checkCollision($e:Event):void
-		{
-			checkHeroCollision();
-			checkHeroAttackCollision();
-			checkItemCollision();
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Looks for a collision between the hero and an enemy.
-		 */
-		public function checkHeroCollision():void
-		{
-			
-			//Return if hero is invulnerable.
-			if (!this.mcHero.bActive)
+				tempArray = this.aItems;
+				removefromPlay($object, tempArray);
+				this.aItems = tempArray;
 				return;
+			}
 			
-			for (var i:uint = 0; i < vEnemies.length; i++)
+			if ($object.objectType == GameObjectType.TYPE_ENEMY)
 			{
-				if (this.vEnemies[i].mcHitbox.hitTestObject(this.mcHero.mcHitbox))
-				{
-						trace("GameScreen: Collision! " + i);
-						this.mcHero.nHealth -= this.vEnemies[i].nAttackPower;
-						this.txtHealth.text = this.mcHero.nHealth.toString();
-						this.mcHero.becomeInvulnerable();
-						
-						trace("GameScreen: Hero Health: " + this.mcHero.nHealth);
-						if (this.mcHero.nHealth <= 0)
-							this.screenCompleteSignal.dispatch();
-						
-						break;
-				}
+				tempArray = this.aEnemies;
+				removefromPlay($object, tempArray);
+				this.aEnemies = tempArray;
+				return;
+			}
+			
+			if ($object.objectType == GameObjectType.TYPE_WEAPON)
+			{
+				tempArray = this.aHeroAttacks;
+				removefromPlay($object, tempArray);
+				this.aHeroAttacks = tempArray;
+				return;
 			}
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		/**
-		 * Looks for a collision between the hero and an item.
-		 */
-		public function checkItemCollision():void
+		public function removefromPlay($object:AbstractGameObject, $objectArray:Array):void
 		{
-			for (var i:uint = 0; i < vItems.length; i++)
-			{
-				if (this.mcHero.mcHitbox.hitTestObject(this.vItems[i].mcHitbox))
+			var objectIndex :int = $objectArray.indexOf($object);
+			
+			if (objectIndex >= 0)
 				{
-					//NOTE: check for max health after leveling system is in place.
-					this.mcHero.nHealth += this.vItems[i].nValue;
-					this.txtHealth.text = this.mcHero.nHealth.toString();
-					trace("GameScreen: Hero health +" + vItems[i].nValue);
-					this.vItems[i].bActive = false;
+					trace("GameScreen: Object Removed " + $object.objectType);
+					$object.end();
+					this.removeChild($object);
+					$objectArray.splice(objectIndex, 1);
 				}
-			}
-			
-			cleanupItems();
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
-		 * Checks if the Hero's attack connects with an enemy.
-		 */
-		public function checkHeroAttackCollision():void
-		{		
-			for (var i:uint = 0; i < this.vHeroAttacks.length; i++)
-			{
-				for (var j:uint = 0; j < this.vEnemies.length; j++)
-				{
-					if (this.vHeroAttacks[i].hitTestObject(this.vEnemies[j]))
-					{
-						trace("GameScreen: Weapon " + i + " struck Enemy " + j);
-						this.vEnemies[j].nHealth -= this.vHeroAttacks[i].nAttackPower;
-						
-						if (this.vEnemies[j].nHealth <= 0)
-						{
-							this.vEnemies[j].bActive = false;
-							this.nScore += this.vEnemies[j].nValue;
-							this.txtScore.text = this.nScore.toString();
-						}
-						this.vHeroAttacks[i].bActive = false;
-					}
-				}
-			}
-			
-			cleanupSwords();
-			cleanupEnemies();
-			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

@@ -1,11 +1,13 @@
 package com.chrisp.objects.items
 {
+	import com.chrisp.objects.AbstractGameObject;
 	import flash.display.MovieClip;
 	import com.natejc.utils.StageRef;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
 	import com.chrisp.collision.GameObjectType;
+	import com.chrisp.collision.CollisionManager;
 
 	
 	/**
@@ -96,6 +98,8 @@ package com.chrisp.objects.items
 				if (this.x > StageRef.stage.stageWidth)
 				{
 					this.bActive = false;
+					CollisionManager.instance.remove(this);
+					this.cleanupSignal.dispatch(this);
 					return;
 				}
 				
@@ -107,6 +111,8 @@ package com.chrisp.objects.items
 				if (this.x < 0)
 				{
 					this.bActive = false;
+					CollisionManager.instance.remove(this);
+					this.cleanupSignal.dispatch(this);
 					return;
 				}
 				
@@ -118,6 +124,8 @@ package com.chrisp.objects.items
 				if (this.y < 0)
 				{
 					this.bActive = false;
+					CollisionManager.instance.remove(this);
+					this.cleanupSignal.dispatch(this);
 					return;
 				}
 				
@@ -129,6 +137,8 @@ package com.chrisp.objects.items
 				if (this.y > StageRef.stage.stageHeight)
 				{
 					this.bActive = false;
+					CollisionManager.instance.remove(this);
+					this.cleanupSignal.dispatch(this);
 					return;
 				}
 				
@@ -137,6 +147,21 @@ package com.chrisp.objects.items
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function collidedWith($object:AbstractGameObject):void
+		{
+			/*
+			if ($object.objectType == GameObjectType.TYPE_ENEMY)
+			{
+				this.bActive = false;
+				CollisionManager.instance.remove(this);
+				this.cleanupSignal.dispatch(this);
+			}
+			*/
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 	}
 }
 

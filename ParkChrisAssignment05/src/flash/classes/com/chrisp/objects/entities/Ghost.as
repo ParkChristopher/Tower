@@ -1,11 +1,13 @@
 package com.chrisp.objects.entities
 {
+	import com.chrisp.collision.CollisionManager;
+	import com.chrisp.collision.GameObjectType;
+	import com.chrisp.objects.AbstractGameObject;
 	import com.greensock.*;
 	import com.greensock.easing.*;
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import com.chrisp.collision.GameObjectType;
 	
 	/**
 	 * Dictates the functionality and information for a ghost enemy.
@@ -96,6 +98,31 @@ package com.chrisp.objects.entities
 			
 			if (this.y > $target.y)
 				this.y -= MOVE_SPEED;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function collidedWith($object:AbstractGameObject):void
+		{
+			trace("Ghost: collided with" + $object.objectType);
+			
+			if ($object.objectType == GameObjectType.TYPE_WEAPON)
+			{
+				this.nHealth -= $object.nAttackPower;
+				
+				
+				$object.bActive = false;
+				CollisionManager.instance.remove($object);
+				$object.cleanupSignal.dispatch($object);
+				
+				if (this.nHealth <= 0)
+				{
+					trace("ENEMY DEAD");
+					this.bActive = false;
+					CollisionManager.instance.remove(this);
+					this.cleanupSignal.dispatch(this);
+				}
+			}
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
