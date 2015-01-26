@@ -1,6 +1,5 @@
 package com.chrisp.objects.entities
 {
-	import com.chrisp.collision.CollisionManager;
 	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
 	import com.greensock.*;
@@ -30,8 +29,6 @@ package com.chrisp.objects.entities
 			this.nAttackPower = 20;
 			this.nValue = 100;
 			this._sObjectType = GameObjectType.TYPE_ENEMY;
-			addCollidableType(GameObjectType.TYPE_HERO);
-			addCollidableType(GameObjectType.TYPE_WEAPON);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -47,7 +44,7 @@ package com.chrisp.objects.entities
 			this.movementTimer = new Timer(250 + Math.random() * 1000 );
 			this.movementTimer.addEventListener(TimerEvent.TIMER, actionReady);
 			this.movementTimer.start();
-			TweenMax.to(this, 2, {glowFilter:{color:0xffff99, alpha:1, blurX:15, blurY:20}, yoyo:true, repeat:-1});
+			TweenMax.to(this, 2, {glowFilter:{color:0x9933cc, alpha:1, blurX:15, blurY:20}, yoyo:true, repeat:-1});
 			
 		}
 		
@@ -102,29 +99,13 @@ package com.chrisp.objects.entities
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Responses to collision with another object.
+		 * 
+		 * @param	$object AbstractGameObject.
+		 */
 		override public function collidedWith($object:AbstractGameObject):void
-		{
-			//trace("Ghost: collided with" + $object.objectType);
-			
-			if ($object.objectType == GameObjectType.TYPE_WEAPON)
-			{
-				//this.nHealth -= $object.nAttackPower;
-				
-				
-				//$object.bActive = false;
-				//CollisionManager.instance.remove($object);
-				//$object.cleanupSignal.dispatch($object);
-				
-				/*
-				if (this.nHealth <= 0)
-				{
-					this.bActive = false;
-					CollisionManager.instance.remove(this);
-					this.cleanupSignal.dispatch(this);
-				}
-				*/
-			}
-		}
+		{}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

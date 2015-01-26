@@ -2,7 +2,6 @@ package com.chrisp.collision
 {
 	import com.chrisp.objects.AbstractGameObject;
 	import com.natejc.utils.StageRef;
-	import flash.display.MovieClip;
 	import flash.events.Event;
 
 	/**
@@ -16,6 +15,7 @@ package com.chrisp.collision
 		private static const _instance	:CollisionManager = new CollisionManager( SingletonLock );
 		/** Lists of objects checked for collision. */
 		protected var _aTrackedObjects	:Array = new Array();
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
@@ -86,8 +86,7 @@ package com.chrisp.collision
 				aObjectsOfSameType = new Array();
 			
 			aObjectsOfSameType.push($object);
-			this._aTrackedObjects[$object.objectType] = aObjectsOfSameType;
-			//trace("CollisionManager: Object added " + $object.objectType);
+			_aTrackedObjects[$object.objectType] = aObjectsOfSameType;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -99,7 +98,6 @@ package com.chrisp.collision
 		 */
 		public function remove($object:AbstractGameObject):void
 		{
-			trace("CollisionManager: Remove entered.");
 			var aObjectsOfSameType :Array = this._aTrackedObjects[$object.objectType];
 			
 			if (aObjectsOfSameType == null)
@@ -108,10 +106,8 @@ package com.chrisp.collision
 			var nObjectRemoveIndex :int = aObjectsOfSameType.indexOf($object);
 			
 			if (nObjectRemoveIndex >= 0)
-			{
 				aObjectsOfSameType.splice(nObjectRemoveIndex, 1);
-				trace("CollisionManager: Object removed " + $object.objectType);
-			}	
+			
 			this._aTrackedObjects[$object.objectType] = aObjectsOfSameType;
 			
 		}
@@ -157,24 +153,22 @@ package com.chrisp.collision
 			for (var i:uint = 0; i < aCollidesWithTypes.length; i++)
 			{
 				sTypeIndex = aCollidesWithTypes[i];
+				aCollidesAgainst = _aTrackedObjects[sTypeIndex];
 				
-				aCollidesAgainst = this._aTrackedObjects[sTypeIndex];
-				
-				if (aCollidesAgainst == null)
-					break;
-				
-				for (var j:uint = 0; j < aCollidesAgainst.length; j++)
+				if (aCollidesAgainst != null)
 				{
-					mcObjectInstance = aCollidesAgainst[i];
-					
-					if (mcObjectInstance == null)
-						break;
-					
-					if ($object.hitTestObject(mcObjectInstance))
-						$object.collidedWith(mcObjectInstance);
+					for (var j:uint = 0; j < aCollidesAgainst.length; j++)
+					{
+						mcObjectInstance = aCollidesAgainst[j];
+						
+						if (mcObjectInstance == null)
+							break;
+							
+						if ($object.Hitbox.hitTestObject(mcObjectInstance.Hitbox))
+							$object.collidedWith(mcObjectInstance);
+						
+					}
 				}
-				
-				
 			}
 		}
 		
@@ -182,8 +176,6 @@ package com.chrisp.collision
 		
 	}
 }
-
-
 
 class SingletonLock {} // Do nothing, this is just to prevent external instantiation.
 

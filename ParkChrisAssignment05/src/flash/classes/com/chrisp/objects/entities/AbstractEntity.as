@@ -1,9 +1,7 @@
 package com.chrisp.objects.entities
 {
 	import com.chrisp.objects.AbstractGameObject;
-	import com.chrisp.objects.HitBox;
 	import flash.display.MovieClip;
-	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
 	
 	/**

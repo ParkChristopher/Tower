@@ -1,10 +1,7 @@
 package com.chrisp.objects.items
 {
 	import com.chrisp.objects.AbstractGameObject;
-	import flash.display.MovieClip;
-	import org.osflash.signals.Signal;
 
-	
 	/**
 	 * Base abstraction class for Items
 	 * 
@@ -27,6 +24,9 @@ package com.chrisp.objects.items
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Starts the object.
+		 */
 		override public function begin():void
 		{
 			super.begin();
@@ -34,6 +34,9 @@ package com.chrisp.objects.items
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Ends the object.
+		 */
 		override public function end():void
 		{
 			super.end();

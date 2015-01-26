@@ -1,13 +1,11 @@
 package com.chrisp.objects.items
 {
+	import com.chrisp.collision.CollisionManager;
+	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
-	import flash.display.MovieClip;
 	import com.natejc.utils.StageRef;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import org.osflash.signals.Signal;
-	import com.chrisp.collision.GameObjectType;
-	import com.chrisp.collision.CollisionManager;
 
 	
 	/**
@@ -148,18 +146,19 @@ package com.chrisp.objects.items
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Responses to collision with another object.
+		 * 
+		 * @param	$object AbstractGameObject.
+		 */
 		override public function collidedWith($object:AbstractGameObject):void
 		{
-			trace("Sword: collided with Enemy");
-			
 			if ($object.objectType == GameObjectType.TYPE_ENEMY)
-			{
+			{	
+				if(!this.bActive)
+					return;
+				
 				$object.nHealth -= this.nAttackPower;
-				
-				this.bActive = false;
-				CollisionManager.instance.remove(this);
-				this.cleanupSignal.dispatch(this);
-				
 				
 				if ($object.nHealth <= 0)
 				{
@@ -167,8 +166,11 @@ package com.chrisp.objects.items
 					CollisionManager.instance.remove($object);
 					$object.cleanupSignal.dispatch($object);
 				}
+				
+				this.bActive = false;
+				CollisionManager.instance.remove(this);
+				this.cleanupSignal.dispatch(this);
 			}
-			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

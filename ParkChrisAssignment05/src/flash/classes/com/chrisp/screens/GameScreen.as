@@ -1,19 +1,16 @@
 ﻿package com.chrisp.screens
 {
 	import com.chrisp.collision.CollisionManager;
+	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
 	import com.chrisp.objects.entities.AbstractEntity;
 	import com.chrisp.objects.entities.Ghost;
 	import com.chrisp.objects.entities.Hero;
-	import com.chrisp.objects.items.AbstractItem;
 	import com.chrisp.objects.items.Potion;
 	import com.natejc.utils.StageRef;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.utils.Timer;
-	import com.chrisp.collision.GameObjectType;
 	
 	/**
 	 * Controls game flow.
@@ -55,7 +52,6 @@
 			super();
 			this.mouseEnabled	= true;
 			this.mouseChildren	= true;
-			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -75,16 +71,14 @@
 			this.aHeroAttacks = new Array();
 			this.aItems = new Array();
 			
-			this.spawnTimer = new Timer(750);//Was 750
+			this.spawnTimer = new Timer(750);
 			this.spawnTimer.addEventListener(TimerEvent.TIMER, spawnEnemy);
 			
-			this.itemTimer = new Timer(5000);
+			this.itemTimer = new Timer(10000);
 			this.itemTimer.addEventListener(TimerEvent.TIMER, spawnItem);
 			
 			spawnHero(StageRef.stage.stageWidth * 0.5, StageRef.stage.stageHeight * 0.75);
-			this.mcHero.attackSignal.add(addHeroAttack);
-			this.mcHero.heroDiedSignal.add(gameEnded);
-			this.txtHealth.text = this.mcHero.nHealth.toString();
+			
 			this.spawnTimer.start();
 			this.itemTimer.start();
 		}
@@ -131,7 +125,18 @@
 				this.aItems[i].end();
 				this.removeChild(aItems[i]);
 			}
-			
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Updates the health text on the screen.
+		 * 
+		 * @param	$health Number.
+		 */
+		public function updateHealthText($health:Number):void
+		{
+			txtHealth.text = $health.toString();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -160,6 +165,7 @@
 		
 		/**
 		 * Spawns enemies for the hero to battle with.
+		 * 
 		 * @param	$e	TimerEvent.
 		 */
 		public function spawnEnemy($e:TimerEvent):void
@@ -173,12 +179,13 @@
 			this.addChild(ghost);
 			ghost.cleanupSignal.add(cleanupObject);
 			ghost.begin();
-			
 		}
+		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
 		 * Spawns the hero at the specified location on the game map.
+		 * 
 		 * @param	$x	Position x,	Number
 		 * @param	$y	Position y,	Number
 		 */
@@ -187,8 +194,13 @@
 			this.mcHero = new Hero();
 			this.mcHero.x = $x;
 			this.mcHero.y = $y;
+			
 			CollisionManager.instance.add(this.mcHero);
 			this.addChild(mcHero);
+			this.txtHealth.text = this.mcHero.nHealth.toString();
+			this.mcHero.attackSignal.add(addHeroAttack);
+			this.mcHero.heroDiedSignal.add(gameEnded);
+			this.mcHero.healthUpdateSignal.add(updateHealthText);
 			this.mcHero.begin();
 		}
 		
@@ -213,6 +225,8 @@
 		
 		/**
 		 * Adds a hero attack to aHeroAttacks for collision checks 
+		 * 
+		 * @param	$attackItem AbstractGameobject
 		 */
 		public function addHeroAttack($attackItem:AbstractGameObject):void
 		{	
@@ -229,7 +243,7 @@
 		/**
 		 * Dispatches a target for the enemy to move to
 		 * 
-		 * @param	$enemy
+		 * @param	$enemy Enemy that wants the target.
 		 */
 		public function dispatchTarget($enemy:AbstractEntity):void
 		{
@@ -238,50 +252,31 @@
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Cleans up objects while the game is being played.
+		 * 
+		 * @param	$object AbstractGameObject.
+		 */
 		public function cleanupObject($object:AbstractGameObject):void
 		{
 			var tempArray	:Array;
 			
 			if ($object.objectType == GameObjectType.TYPE_COLLECTIBLE)
 			{
-				var i :int;
-				tempArray = new Array();
-				
-				for (i = 0; i < aItems.length;  i++)
-				{
-					if (!aItems[i].bActive)
-					{
-						aItems[i].end();
-						this.removeChild(aItems[i]);
-					}
-					else
-					{
-						tempArray.push(aItems[i]);
-					}
-				}
-				
-				aItems = tempArray;
+				tempArray = this.aItems;
+				removefromPlay($object, tempArray);
+				this.aItems = tempArray;
+				return;
 			}
 			
 			if ($object.objectType == GameObjectType.TYPE_ENEMY)
 			{
-				trace("cleanup ghost");
-				tempArray = new Array();
-				
-				for (i = 0; i < aEnemies.length; i++)
-				{
-					if (!aEnemies[i].bActive)
-					{
-						aEnemies[i].end();
-						this.removeChild(aEnemies[i]);
-					}
-					else
-					{
-						tempArray.push(aEnemies[i]);
-					}
-				}
-				
-				aEnemies = tempArray;
+				nScore += $object.nValue;
+				txtScore.text = nScore.toString();
+				tempArray = this.aEnemies;
+				removefromPlay($object, tempArray);
+				this.aEnemies = tempArray;
+				return;
 			}
 			
 			if ($object.objectType == GameObjectType.TYPE_WEAPON)
@@ -295,13 +290,18 @@
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Removes an object from play.
+		 * 
+		 * @param	$object			AbstractGameObject to be removed.
+		 * @param	$objectArray 	Array that contains the object.
+		 */
 		public function removefromPlay($object:AbstractGameObject, $objectArray:Array):void
 		{
 			var objectIndex :int = $objectArray.indexOf($object);
 			
 			if (objectIndex >= 0)
 				{
-					trace("GameScreen: Object Removed " + $object.objectType);
 					$object.end();
 					this.removeChild($object);
 					$objectArray.splice(objectIndex, 1);

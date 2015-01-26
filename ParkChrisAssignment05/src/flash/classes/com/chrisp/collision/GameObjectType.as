@@ -21,9 +21,7 @@ package com.chrisp.collision
 		 * Constructs the GameObjectTypes object.
 		 */
 		public function GameObjectTypes()
-		{
-			
-		}
+		{}
 		
 		/* ---------------------------------------------------------------------------------------- */		
 		

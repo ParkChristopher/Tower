@@ -1,9 +1,8 @@
 package com.chrisp.objects.items
 {
-	import com.natejc.utils.StageRef;
 	import com.chrisp.collision.GameObjectType;
-	import com.chrisp.collision.CollisionManager;
 	import com.chrisp.objects.AbstractGameObject;
+	import com.natejc.utils.StageRef;
 	
 	/**
 	 * Base abstraction class for Items
@@ -51,22 +50,13 @@ package com.chrisp.objects.items
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		
+		/**
+		 * Responses to collision with another object.
+		 * 
+		 * @param	$object AbstractGameObject.
+		 */
 		override public function collidedWith($object:AbstractGameObject):void
-		{
-			trace("Potion: Collision:");
-			/*
-			if ($object.objectType == GameObjectType.TYPE_HERO)
-			{
-				trace("Potion collided with " + $object.objectType);
-				
-				
-				this.bActive = false;
-				CollisionManager.instance.remove(this);
-				this.cleanupSignal.dispatch(this);
-			}
-			*/
-		}
+		{}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

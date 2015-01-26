@@ -1,6 +1,5 @@
 package com.chrisp.objects
 {
-	import com.chrisp.collision.GameObjectType;
 	import flash.display.MovieClip;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
@@ -25,14 +24,14 @@ package com.chrisp.objects
 		public var nAttackPower			:Number = 0;
 		/** Value of the game object*/
 		public var nValue				:Number = 0;
+		/** Entity health */
+		public var nHealth				:Number;
 		/** Object type used for collision detection. */
 		protected var _sObjectType		:String;
 		/** Array of objects this object can collide with */
 		protected var _aCanCollideWith	:Array = new Array();
 		/** Signals for this object to be cleaned up*/
 		public var cleanupSignal		:Signal = new Signal(AbstractGameObject);
-		/** Entity health */
-		public var nHealth					:Number;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -102,6 +101,9 @@ package com.chrisp.objects
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Returns the list of object types this object can collide with.
+		 */
 		public function get collidableTypes():Array
 		{
 			return _aCanCollideWith;
@@ -109,7 +111,12 @@ package com.chrisp.objects
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		public function getHitbox():MovieClip
+		/**
+		 * returns the hitbox of this object.
+		 * 
+		 * @return mcHitbox
+		 */
+		public function get Hitbox():MovieClip
 		{
 			if (this.mcHitbox != null)
 				return this.mcHitbox;
@@ -119,6 +126,11 @@ package com.chrisp.objects
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Adds an object type to this objects possible collisions list.
+		 * 
+		 * @param	$type String.
+		 */
 		public function addCollidableType($type:String):void
 		{
 			if (_aCanCollideWith.indexOf($type) < 0)
@@ -127,11 +139,13 @@ package com.chrisp.objects
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Responses to collision with another object.
+		 * 
+		 * @param	$object AbstractGameObject
+		 */
 		public function collidedWith($object:AbstractGameObject):void
-		{
-			//if object is collidable for this object
-			//respond
-		}
+		{}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

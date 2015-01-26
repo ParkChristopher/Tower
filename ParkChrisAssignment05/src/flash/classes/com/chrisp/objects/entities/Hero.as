@@ -1,5 +1,6 @@
 package com.chrisp.objects.entities
 {
+	import com.chrisp.collision.CollisionManager;
 	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
 	import com.chrisp.objects.items.AbstractItem;
@@ -10,7 +11,6 @@ package com.chrisp.objects.entities
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
-	import com.chrisp.collision.CollisionManager;
 	
 	//NOTE: Use bActive variable in base class to trigger invulnerability
 	/**
@@ -26,9 +26,11 @@ package com.chrisp.objects.entities
 		private var mcSword					:Sword;	
 		/** Signals an attack to Game Screen. */
 		public var attackSignal				:Signal = new Signal(AbstractItem);
-		/**Signals that the hero has died. */
+		/** Signals that the hero has died. */
 		public var heroDiedSignal			:Signal = new Signal();
-		/**Turns invulnerability off when triggered. */
+		/** Health update signal */
+		public var healthUpdateSignal		:Signal = new Signal(Number);
+		/** Turns invulnerability off when triggered. */
 		public var invulnerabilityTimer		:Timer;
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -223,9 +225,13 @@ package com.chrisp.objects.entities
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Responses to collision with another object.
+		 * 
+		 * @param	$object AbstractGameObject
+		 */
 		override public function collidedWith($object:AbstractGameObject):void
 		{
-			trace("Hero: collided with " + $object.objectType);
 			
 			if ($object.objectType == GameObjectType.TYPE_ENEMY)
 			{
@@ -233,9 +239,8 @@ package com.chrisp.objects.entities
 					return;
 					
 				this.nHealth -= $object.nAttackPower;
+				this.healthUpdateSignal.dispatch(this.nHealth);
 				becomeInvulnerable();
-				
-				trace("Hero health: " + this.nHealth);
 				
 				if (this.nHealth <= 0)
 					this.heroDiedSignal.dispatch();
@@ -244,15 +249,14 @@ package com.chrisp.objects.entities
 				
 			if ($object.objectType == GameObjectType.TYPE_COLLECTIBLE)
 			{
-				trace("Hero: Collision");
-				if ($object.bActive)
-				{
-					$object.bActive = false;
-					this.nHealth += $object.nValue;
-					CollisionManager.instance.remove($object);
-					$object.cleanupSignal.dispatch($object);
-					trace("Hero: Hero health: " + this.nHealth.toString() );
-				}
+				if (!$object.bActive)
+					return;
+					
+				$object.bActive = false;
+				this.nHealth += $object.nValue;
+				this.healthUpdateSignal.dispatch(this.nHealth);
+				CollisionManager.instance.remove($object);
+				$object.cleanupSignal.dispatch($object);
 			}
 		}
 		
