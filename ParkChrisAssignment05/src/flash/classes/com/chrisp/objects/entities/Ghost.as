@@ -104,24 +104,25 @@ package com.chrisp.objects.entities
 		
 		override public function collidedWith($object:AbstractGameObject):void
 		{
-			trace("Ghost: collided with" + $object.objectType);
+			//trace("Ghost: collided with" + $object.objectType);
 			
 			if ($object.objectType == GameObjectType.TYPE_WEAPON)
 			{
-				this.nHealth -= $object.nAttackPower;
+				//this.nHealth -= $object.nAttackPower;
 				
 				
-				$object.bActive = false;
-				CollisionManager.instance.remove($object);
-				$object.cleanupSignal.dispatch($object);
+				//$object.bActive = false;
+				//CollisionManager.instance.remove($object);
+				//$object.cleanupSignal.dispatch($object);
 				
+				/*
 				if (this.nHealth <= 0)
 				{
-					trace("ENEMY DEAD");
 					this.bActive = false;
 					CollisionManager.instance.remove(this);
 					this.cleanupSignal.dispatch(this);
 				}
+				*/
 			}
 		}
 		

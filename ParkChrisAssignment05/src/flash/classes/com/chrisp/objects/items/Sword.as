@@ -150,14 +150,25 @@ package com.chrisp.objects.items
 		
 		override public function collidedWith($object:AbstractGameObject):void
 		{
-			/*
+			trace("Sword: collided with Enemy");
+			
 			if ($object.objectType == GameObjectType.TYPE_ENEMY)
 			{
+				$object.nHealth -= this.nAttackPower;
+				
 				this.bActive = false;
 				CollisionManager.instance.remove(this);
 				this.cleanupSignal.dispatch(this);
+				
+				
+				if ($object.nHealth <= 0)
+				{
+					$object.bActive = false;
+					CollisionManager.instance.remove($object);
+					$object.cleanupSignal.dispatch($object);
+				}
 			}
-			*/
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

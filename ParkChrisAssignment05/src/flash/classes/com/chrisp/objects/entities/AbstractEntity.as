@@ -13,8 +13,6 @@ package com.chrisp.objects.entities
 	 */
 	public class AbstractEntity extends AbstractGameObject
 	{
-		/** Entity health */
-		public var nHealth					:Number;
 		/** Signal for when movement timer has triggered. */
 		public var readyToMoveSignal		:Signal = new Signal(AbstractEntity);
 		

@@ -31,6 +31,8 @@ package com.chrisp.objects
 		protected var _aCanCollideWith	:Array = new Array();
 		/** Signals for this object to be cleaned up*/
 		public var cleanupSignal		:Signal = new Signal(AbstractGameObject);
+		/** Entity health */
+		public var nHealth					:Number;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

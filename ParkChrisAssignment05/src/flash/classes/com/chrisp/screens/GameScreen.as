@@ -75,9 +75,7 @@
 			this.aHeroAttacks = new Array();
 			this.aItems = new Array();
 			
-			//this.addEventListener(Event.ENTER_FRAME, checkCollision);
-			
-			this.spawnTimer = new Timer(10000);//Was 750
+			this.spawnTimer = new Timer(750);//Was 750
 			this.spawnTimer.addEventListener(TimerEvent.TIMER, spawnEnemy);
 			
 			this.itemTimer = new Timer(5000);
@@ -173,6 +171,7 @@
 			CollisionManager.instance.add(ghost);
 			this.aEnemies.push(ghost);
 			this.addChild(ghost);
+			ghost.cleanupSignal.add(cleanupObject);
 			ghost.begin();
 			
 		}
@@ -202,7 +201,7 @@
 		 */
 		public function spawnItem($e:TimerEvent):void
 		{
-			var pickupItem	:AbstractGameObject = new Potion();
+			var pickupItem	:Potion = new Potion();
 			
 			CollisionManager.instance.add(pickupItem);
 			this.aItems.push(pickupItem);
@@ -245,18 +244,44 @@
 			
 			if ($object.objectType == GameObjectType.TYPE_COLLECTIBLE)
 			{
-				tempArray = this.aItems;
-				removefromPlay($object, tempArray);
-				this.aItems = tempArray;
-				return;
+				var i :int;
+				tempArray = new Array();
+				
+				for (i = 0; i < aItems.length;  i++)
+				{
+					if (!aItems[i].bActive)
+					{
+						aItems[i].end();
+						this.removeChild(aItems[i]);
+					}
+					else
+					{
+						tempArray.push(aItems[i]);
+					}
+				}
+				
+				aItems = tempArray;
 			}
 			
 			if ($object.objectType == GameObjectType.TYPE_ENEMY)
 			{
-				tempArray = this.aEnemies;
-				removefromPlay($object, tempArray);
-				this.aEnemies = tempArray;
-				return;
+				trace("cleanup ghost");
+				tempArray = new Array();
+				
+				for (i = 0; i < aEnemies.length; i++)
+				{
+					if (!aEnemies[i].bActive)
+					{
+						aEnemies[i].end();
+						this.removeChild(aEnemies[i]);
+					}
+					else
+					{
+						tempArray.push(aEnemies[i]);
+					}
+				}
+				
+				aEnemies = tempArray;
 			}
 			
 			if ($object.objectType == GameObjectType.TYPE_WEAPON)

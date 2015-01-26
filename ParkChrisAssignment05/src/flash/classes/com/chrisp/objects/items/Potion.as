@@ -54,7 +54,7 @@ package com.chrisp.objects.items
 		
 		override public function collidedWith($object:AbstractGameObject):void
 		{
-			//trace("Potion: Collision:");
+			trace("Potion: Collision:");
 			/*
 			if ($object.objectType == GameObjectType.TYPE_HERO)
 			{
