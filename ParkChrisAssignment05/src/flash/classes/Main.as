@@ -4,19 +4,13 @@ package
 	import flash.display.MovieClip;
 	import com.natejc.utils.StageRef;
 	
-	//NOTE: Refactor AbstractGameObjects so vector generics can be used for
-	//strategy in a generic cleanup function.
-	//BUG: Potions stop spawning at random time after game starts. Seems to vary between 1 - 5 spawns per game.
-	//	-ToCheck: Collision and spawn functions for items. (GameScreen)
-	//  -Does it have something to do with the vector swapping in the cleanup function? (GameScreen)
 	//TO IMPLEMENT NEXT:
 	//	-Health bar.
 	//	-Experience values and leveling of base attack power
 	//	-Fade effect to make ghosts dissappear and reappear on move.
-	//	-Better Sword, Hero, GameScreen Background (too much grey, too many stone tiles)
-	//		-Basic Tweens or animations for the first two.
-	//  -More detail on the TitleScreen (tower still looks like crap, Mountains need to be fleshed out)
+	//  -More detail on the TitleScreen ( Mountains need to be fleshed out)
 	//	-Game Title graphic with tweening.
+	//  -Animations for Hero and Enemies
 	
 	/**
 	 * Drives the project.

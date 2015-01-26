@@ -86,7 +86,7 @@ package com.chrisp.collision
 				aObjectsOfSameType = new Array();
 			
 			aObjectsOfSameType.push($object);
-			_aTrackedObjects[$object.objectType] = aObjectsOfSameType;
+			this._aTrackedObjects[$object.objectType] = aObjectsOfSameType;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -123,9 +123,9 @@ package com.chrisp.collision
 		{
 			var aObjectsOfSameType	:Array;
 			
-			for (var sObjectType:String in _aTrackedObjects)
+			for (var sObjectType:String in this._aTrackedObjects)
 			{
-				aObjectsOfSameType = _aTrackedObjects[sObjectType];
+				aObjectsOfSameType = this._aTrackedObjects[sObjectType];
 				
 				if (aObjectsOfSameType != null)
 				{
@@ -153,7 +153,7 @@ package com.chrisp.collision
 			for (var i:uint = 0; i < aCollidesWithTypes.length; i++)
 			{
 				sTypeIndex = aCollidesWithTypes[i];
-				aCollidesAgainst = _aTrackedObjects[sTypeIndex];
+				aCollidesAgainst = this._aTrackedObjects[sTypeIndex];
 				
 				if (aCollidesAgainst != null)
 				{
