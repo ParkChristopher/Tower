@@ -1,5 +1,7 @@
 package 
 {
+	import com.greensock.loading.LoaderMax;
+	import com.greensock.loading.XMLLoader;
 	import com.natejc.input.KeyboardManager;
 	import flash.display.MovieClip;
 	import com.natejc.utils.StageRef;
@@ -35,15 +37,57 @@ package
 		{
 			KeyboardManager.init(this.stage);
 			StageRef.stage = this.stage;
+			load();
 			
 			this.mcGameScreen.screenCompleteSignal.add(startResults);
 			this.mcTitleScreen.screenCompleteSignal.add(startGame);
 			this.mcResultScreen.screenCompleteSignal.add(startTitle);
 			
+			init();
+			trace("Main: Initialized.");
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Loads any content from xml/config.xml
+		 */
+		protected function load():void
+		{
+			var queue:LoaderMax = new LoaderMax( { name:"xmlLoad", onProgress:progressHandler, onComplete:completeHandler, onError:errorHandler } );
+			
+			queue.append(new XMLLoader("xml/config.xml", { name:"xmlConfig" } ));
+			queue.load();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		protected function progressHandler():void
+		{
+			  trace("progress: " + event.target.progress);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		protected function completeHandler():void
+		{
+			trace(event.target + " is complete!");
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		protected function errorHandler():void
+		{
+			trace("error occured with " + event.target + ": " + event.text);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		//Initializes the game
+		protected function init():void
+		{
 			this.mcTitleScreen.begin();
 			this.mcResultScreen.end();
-			
-			trace("Main: Initialized.");
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
