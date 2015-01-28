@@ -1,0 +1,83 @@
+This week, increasing difficulty.
+Improve rewards: (base stat increase)
+
+loading an external file (xml)
+
+-config file, controls starting values and difficulty progression
+-add credit screen (with hyperlink and photo)
+
+
+loading manager: loadermax (part of tween max)
+
+
+
+
+
+
+in main:
+
+this.load();(after keyboard)
+
+//loads external files
+protected function load():void
+{
+    (get code for xml loader and insert here)
+	newXMLLoader("xml/config.xml", progressfunction call, oncomplete, error handling)
+}
+
+(3 functions are defined in example code (make private))
+
+init function in main (called after load)
+//initializes everything the game uses before beginning
+(called in init handler?)
+init()
+{
+	start title screen
+}
+
+___________________________-
+
+config.xml
+
+<config>
+  <scoring></scoring>
+  <gameobjects>
+    <hero>
+	<numLives>3</numLives><!-- comment -->
+    </hero>
+  </gameobjects>
+</config>
+
+to grab a value from the file in a class (ex hero class)
+do it in either constructor or begin (begin preferred)
+
+parseXML();
+
+//update object data based on xml settings
+protected function parseXML():void
+{
+    var xConfig:XML = LoaderMax.getContent("filename"); (trace to ensure proper load)
+
+(one dot for each level in the xml heirarchy)
+this.moveSpeed = (cast as expected type)xConfig.Gameobject.hero.movementspeed
+
+(to get an attribute from an xml node: node.@attributename)
+}
+
+Advanced (FANCY!!!) XML: (E4x)
+
+read page from link.
+
+__________________________________________
+as3 sound manager: (google it)
+
+Wednesday
+
+
+
+
+
+
+
+
+
