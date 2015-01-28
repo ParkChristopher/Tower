@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <config>
-  <scoring></scoring>
+  <scoring>
+	<multiplier>
+	</multiplier>
+  </scoring>
   <gameobjects>
-    <hero>
-	<moveSpeed>4</moveSpeed>
+	<hero>
+		<moveSpeed>4</moveSpeed>
+		<health>100</health>
     </hero>
+	<ghost>
+		<moveSpeed></moveSpeed>
+		<pointValue>100</pointValue>
+		<attackPower>20</attackPower>
+	</ghost>
+	<potion>
+		<pointValue>50</pointValue>
+	</potion>
+	<sword>
+		<attackPower>4</attackPower>
+	</sword>
   </gameobjects>
 </config>

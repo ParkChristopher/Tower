@@ -3,7 +3,7 @@ package com.chrisp.objects
 	import flash.display.MovieClip;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
-
+	import com.greensock.loading.LoaderMax;
 	
 	/**
 	 * Base class for all game objects
@@ -66,6 +66,7 @@ package com.chrisp.objects
 		 */
 		public function begin():void
 		{
+			parseXML();
 			this.visible = true;
 		}
 		
@@ -77,6 +78,17 @@ package com.chrisp.objects
 		public function end():void
 		{
 			this.visible = false;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Parses the relevant data from the xml config file for this object.
+		 */
+		protected function parseXML():void
+		{
+			var xConfig:XML = LoaderMax.getContent("xmlConfig");
+			//trace(xConfig);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

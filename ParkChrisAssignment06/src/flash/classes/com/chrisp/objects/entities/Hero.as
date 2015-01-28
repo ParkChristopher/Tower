@@ -5,6 +5,7 @@ package com.chrisp.objects.entities
 	import com.chrisp.objects.AbstractGameObject;
 	import com.chrisp.objects.items.AbstractItem;
 	import com.chrisp.objects.items.Sword;
+	import com.greensock.loading.LoaderMax;
 	import com.natejc.input.KeyboardManager;
 	import com.natejc.input.KeyCode;
 	import flash.events.Event;
@@ -21,7 +22,7 @@ package com.chrisp.objects.entities
 	public class Hero extends AbstractEntity
 	{
 		/** Movement speed of Hero. */
-		private const MOVEMENT_SPEED		:Number = 4;
+		public var MOVEMENT_SPEED			:Number = 0;
 		/** Weapon used to attack by the hero. */
 		private var mcSword					:Sword;	
 		/** Signals an attack to Game Screen. */
@@ -60,6 +61,9 @@ package com.chrisp.objects.entities
 			KeyboardManager.instance.addKeyDownListener(KeyCode.LEFT, attackLeft);
 			KeyboardManager.instance.addKeyDownListener(KeyCode.UP, attackUp);
 			KeyboardManager.instance.addKeyDownListener(KeyCode.DOWN, attackDown);
+			
+			parseXML();
+			
 			this.invulnerabilityTimer = new Timer(2000);
 			this.invulnerabilityTimer.addEventListener(TimerEvent.TIMER, becomeVulnerable);
 			this.bActive = true;
@@ -84,6 +88,20 @@ package com.chrisp.objects.entities
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Parses relevant information for this object
+		 */
+		override protected function parseXML():void
+		{
+			var xConfig:XML = LoaderMax.getContent("xmlConfig");
+			this.MOVEMENT_SPEED = Number(xConfig.gameobjects.hero.moveSpeed);
+			//NOTE: this is the correct format for standard xml tag value retrieval
+			
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		/**
 		 * Checks for events from the player.
 		 * 

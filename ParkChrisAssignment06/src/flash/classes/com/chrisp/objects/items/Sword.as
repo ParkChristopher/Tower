@@ -68,6 +68,14 @@ package com.chrisp.objects.items
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
+		 * Parses relevant information for this object
+		 */
+		override protected function parseXML():void
+		{}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
 		 * Rotates the sword to point in the direction it travels.
 		 */
 		public function rotate():void

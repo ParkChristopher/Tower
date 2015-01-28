@@ -66,6 +66,14 @@ package com.chrisp.objects.entities
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
+		 * Parses relevant information for this object
+		 */
+		override protected function parseXML():void
+		{}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
 		 * Signals to GameScreen that it's ready to move.
 		 * 
 		 * @param	$e TimerEvent

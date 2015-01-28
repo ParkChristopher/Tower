@@ -51,6 +51,14 @@ package com.chrisp.objects.items
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
+		 * Parses relevant information for this object
+		 */
+		override protected function parseXML():void
+		{}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
 		 * Responses to collision with another object.
 		 * 
 		 * @param	$object AbstractGameObject.

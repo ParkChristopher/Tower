@@ -35,12 +35,13 @@ init()
 	start title screen
 }
 
-___________________________-
+___________________________
 
 config.xml
 
 <config>
-  <scoring></scoring>
+  <scoring>
+  </scoring>
   <gameobjects>
     <hero>
 	<numLives>3</numLives><!-- comment -->

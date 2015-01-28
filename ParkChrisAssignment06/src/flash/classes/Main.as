@@ -5,14 +5,7 @@ package
 	import com.natejc.input.KeyboardManager;
 	import flash.display.MovieClip;
 	import com.natejc.utils.StageRef;
-	
-	//TO IMPLEMENT NEXT:
-	//	-Health bar.
-	//	-Experience values and leveling of base attack power
-	//	-Fade effect to make ghosts dissappear and reappear on move.
-	//  -More detail on the TitleScreen ( Mountains need to be fleshed out)
-	//	-Game Title graphic with tweening.
-	//  -Animations for Hero and Enemies
+	import com.greensock.events.LoaderEvent;
 	
 	/**
 	 * Drives the project.
@@ -62,28 +55,30 @@ package
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		protected function progressHandler():void
+		protected function progressHandler(event:LoaderEvent):void
 		{
 			  trace("progress: " + event.target.progress);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		protected function completeHandler():void
+		protected function completeHandler(event:LoaderEvent):void
 		{
 			trace(event.target + " is complete!");
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		protected function errorHandler():void
+		protected function errorHandler(event:LoaderEvent):void
 		{
 			trace("error occured with " + event.target + ": " + event.text);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
-		//Initializes the game
+		/**
+		 * Initializes the game
+		 */
 		protected function init():void
 		{
 			this.mcTitleScreen.begin();
