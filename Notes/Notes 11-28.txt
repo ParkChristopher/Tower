@@ -1,0 +1,84 @@
+last assignment for this game due tue
+
+Saving score:
+
+Local Shared Object: (link for asdoc in todays notes w/tutorial)
+-like a web browser cookie
+(in init function or where its necessary)
+var so:SharedObject SharedObject.getLocal("test");
+trace("SharedObject is " + so.size + " bytes");
+
+//
+if(so.size == 0)
+{
+	so.data.highscore = 0;
+}
+
+so.data.anyvariablehere (created when you use it like an entry in an ini file)
+
+example:
+
+so.data.highscore = 100;
+
+trace(so.data.highscore) //will output 100
+
+
+-----------------------------------------
+
+
+flashkit.com - has sound effects and loops for free
+
+
+
+Transitions between screens:
+AbstractScreen -> show(); hide(); hide complete();
+
+FadingScreen class extend AbstractScreen
+
+-override show and hide
+
+in show()
+
+tweenmax.fromto(this, .5, {alpha:0} (start), {alpha:1, ease:Linear.easeNone}(end), onComplete:this.showComplete);
+
+in hide:
+
+do from 1 to 0 on alpha (use autoAlpha instead of alpha for visibility extreme controls
+
+use this fadingscreen class as the extension parent for the screen you wnat to have the transition
+
+in main: - link the hide start signal dispatch to starting a tween from show or hide so that it crossfades, or mix an match
+
+-----------------------------------------
+
+Masks: use purple, easy to see
+Note: you can add commands such as stop() in a frame on its own layer.
+
+flicker - snippit that adds flicker to a graphic
+parameters: sprite to flicker, duration in seconds, reapeat count
+
+to use:
+call this.flicker(referenceobject)
+
+
+other things:
+_______________________________________________________________
+
+animation this.gotoAndPlay("animationnamelabel")
+
+tweemax.delayedcall(time, functiontocall)
+
+
+display utils - 
+DisplayUtils.addLabelScript(mc, frameLabel, function to execute);
+make sure you do this in destroy but pass null as the function to ensure garbage collection, otherwise it will not be called on the object
+
+
+fancy mouse crap:
+
+quotes around a number in tweenmax parameters makes it relative to the mc parameter, otherwise they are absolute;
+
+right click guide on a layer to save its contents and have it not be in the game
+
+Flint for particles.
+or stardust
