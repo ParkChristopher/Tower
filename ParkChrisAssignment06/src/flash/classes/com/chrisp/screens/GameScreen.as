@@ -11,6 +11,7 @@
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.utils.Timer;
+	import com.greensock.loading.LoaderMax;
 	
 	/**
 	 * Controls game flow.
@@ -40,7 +41,14 @@
 		public var txtHealth			:TextField;
 		/** Numerical score */
 		public var nScore				:Number;
-		
+		/** Current Score Multiplier */
+		public var nMultiplier			:Number = 0;
+		/** Base Score Multiplier */
+		public var nBaseMultiplier		:Number = 0;
+		/** Health multiplier that increases enemy difficulty*/
+		public var nHealthMultiplier	:Number = 0;
+		/** Hero's kill count*/
+		public var nKillCount			:Number = 0;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -65,7 +73,8 @@
 			CollisionManager.instance.reset();
 			CollisionManager.instance.begin();
 			
-			this.nScore = 0;
+			parseXML();
+			
 			this.txtScore.text = this.nScore.toString();
 			this.aEnemies = new Array();
 			this.aHeroAttacks = new Array();
@@ -130,6 +139,19 @@
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
+		 * Parses the relevant data from the xml config file for this object.
+		 */
+		protected function parseXML():void
+		{
+			var xConfig:XML = LoaderMax.getContent("xmlConfig");
+			this.nScore = Number(xConfig.scoring.initial);
+			this.nBaseMultiplier = Number(xConfig.scoring.multiplier);
+			this.nHealthMultiplier = Number(xConfig.difficulty.healthModifier);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
 		 * Updates the health text on the screen.
 		 * 
 		 * @param	$health Number.
@@ -179,6 +201,7 @@
 			this.addChild(ghost);
 			ghost.cleanupSignal.add(cleanupObject);
 			ghost.begin();
+			ghost.nHealth += nHealthMultiplier * nKillCount;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -201,6 +224,7 @@
 			this.mcHero.attackSignal.add(addHeroAttack);
 			this.mcHero.heroDiedSignal.add(gameEnded);
 			this.mcHero.healthUpdateSignal.add(updateHealthText);
+			this.mcHero.resetMultiplierSignal.add(resetMultiplier);
 			this.mcHero.begin();
 		}
 		
@@ -232,7 +256,7 @@
 		{	
 			CollisionManager.instance.add($attackItem);
 			this.aHeroAttacks.push($attackItem);
-			this.addChild($attackItem);
+			this.addChildAt($attackItem, 1);
 			$attackItem.cleanupSignal.add(cleanupObject);
 			$attackItem.begin();
 			
@@ -248,6 +272,16 @@
 		public function dispatchTarget($enemy:AbstractEntity):void
 		{
 			$enemy.move(mcHero);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Resets the current score multiplier
+		 */
+		public function resetMultiplier():void
+		{
+			this.nMultiplier = 0;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -271,7 +305,15 @@
 			
 			if ($object.objectType == GameObjectType.TYPE_ENEMY)
 			{
-				nScore += $object.nValue;
+				nKillCount++;
+				trace("Kill count is: " + nKillCount.toString());
+				
+				
+				nScore += ($object.nValue + ($object.nValue * nMultiplier));
+				nMultiplier += nBaseMultiplier;
+				if (nMultiplier > 3.0)
+					nMultiplier = 3.0;
+					
 				txtScore.text = nScore.toString();
 				tempArray = this.aEnemies;
 				removefromPlay($object, tempArray);

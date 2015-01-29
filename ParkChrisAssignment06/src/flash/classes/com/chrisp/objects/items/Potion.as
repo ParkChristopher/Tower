@@ -3,6 +3,7 @@ package com.chrisp.objects.items
 	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
 	import com.natejc.utils.StageRef;
+	import com.greensock.loading.LoaderMax;
 	
 	/**
 	 * Base abstraction class for Items
@@ -20,7 +21,7 @@ package com.chrisp.objects.items
 		public function Potion()
 		{
 			super("Potion");
-			this.nValue = 50;
+			//this.nValue = 50;
 			this.x = Math.random() * StageRef.stage.stageWidth;
 			this.y = Math.random() * StageRef.stage.stageHeight;
 			this._sObjectType = GameObjectType.TYPE_COLLECTIBLE;
@@ -35,6 +36,7 @@ package com.chrisp.objects.items
 		override public function begin():void
 		{
 			super.begin();
+			parseXML();
 			this.bActive = true;
 		}
 		
@@ -54,7 +56,10 @@ package com.chrisp.objects.items
 		 * Parses relevant information for this object
 		 */
 		override protected function parseXML():void
-		{}
+		{
+			var xConfig:XML = LoaderMax.getContent("xmlConfig");
+			this.nValue = Number(xConfig.gameobjects.potion.pointValue);
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		

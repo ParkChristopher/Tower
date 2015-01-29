@@ -75,7 +75,7 @@ as3 sound manager: (google it)
 Wednesday
 
 
-
+navigateToURL(new URLRequest("mailto: myEmail"), "_blank");
 
 
 

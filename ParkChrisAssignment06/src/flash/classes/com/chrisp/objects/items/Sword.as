@@ -6,7 +6,7 @@ package com.chrisp.objects.items
 	import com.natejc.utils.StageRef;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-
+	import com.greensock.loading.LoaderMax;
 	
 	/**
 	 * Dicatates behavior of the hero's sword attack
@@ -18,7 +18,7 @@ package com.chrisp.objects.items
 		/** Direction of travel. */
 		public var sDirection			:String;
 		/** Movement speed of the sword.*/
-		public var MOVE_SPEED			:Number = 16;
+		public var MOVEMENT_SPEED			:Number = 0;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -34,7 +34,7 @@ package com.chrisp.objects.items
 			
 			this.x = $startX;
 			this.y = $startY;
-			this.nAttackPower = 8;
+			//this.nAttackPower = 8;
 			this.sDirection = $direction;
 			rotate();
 		}
@@ -48,6 +48,7 @@ package com.chrisp.objects.items
 		{
 			super.begin();
 			
+			parseXML();
 			this.bActive = true;
 			this.movementTimer = new Timer(30);
 			this.movementTimer.addEventListener(TimerEvent.TIMER, move);
@@ -71,7 +72,11 @@ package com.chrisp.objects.items
 		 * Parses relevant information for this object
 		 */
 		override protected function parseXML():void
-		{}
+		{
+			var xConfig:XML = LoaderMax.getContent("xmlConfig");
+			this.MOVEMENT_SPEED = Number(xConfig.gameobjects.sword.moveSpeed);
+			this.nAttackPower = Number(xConfig.gameobjects.sword.attackPower);
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -109,7 +114,7 @@ package com.chrisp.objects.items
 					return;
 				}
 				
-				this.x += MOVE_SPEED;
+				this.x += MOVEMENT_SPEED;
 			}
 			
 			if (this.sDirection == "left")
@@ -122,7 +127,7 @@ package com.chrisp.objects.items
 					return;
 				}
 				
-				this.x -= MOVE_SPEED;
+				this.x -= MOVEMENT_SPEED;
 			}
 			
 			if (this.sDirection == "up")
@@ -135,7 +140,7 @@ package com.chrisp.objects.items
 					return;
 				}
 				
-				this.y -= MOVE_SPEED;
+				this.y -= MOVEMENT_SPEED;
 			}
 			
 			if (this.sDirection == "down")
@@ -148,7 +153,7 @@ package com.chrisp.objects.items
 					return;
 				}
 				
-				this.y += MOVE_SPEED;
+				this.y += MOVEMENT_SPEED;
 			}
 		}
 		

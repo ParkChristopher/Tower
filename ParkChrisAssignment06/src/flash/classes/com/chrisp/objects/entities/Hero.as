@@ -33,6 +33,8 @@ package com.chrisp.objects.entities
 		public var healthUpdateSignal		:Signal = new Signal(Number);
 		/** Turns invulnerability off when triggered. */
 		public var invulnerabilityTimer		:Timer;
+		/** Used to signal a score multiplier reset */
+		public var resetMultiplierSignal	:Signal = new Signal();
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -96,8 +98,6 @@ package com.chrisp.objects.entities
 		{
 			var xConfig:XML = LoaderMax.getContent("xmlConfig");
 			this.MOVEMENT_SPEED = Number(xConfig.gameobjects.hero.moveSpeed);
-			//NOTE: this is the correct format for standard xml tag value retrieval
-			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -258,6 +258,7 @@ package com.chrisp.objects.entities
 					
 				this.nHealth -= $object.nAttackPower;
 				this.healthUpdateSignal.dispatch(this.nHealth);
+				this.resetMultiplierSignal.dispatch();
 				becomeInvulnerable();
 				
 				if (this.nHealth <= 0)

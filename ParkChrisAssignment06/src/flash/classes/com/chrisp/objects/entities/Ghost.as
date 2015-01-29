@@ -7,6 +7,7 @@ package com.chrisp.objects.entities
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import com.greensock.loading.LoaderMax;
 	
 	/**
 	 * Dictates the functionality and information for a ghost enemy.
@@ -16,7 +17,7 @@ package com.chrisp.objects.entities
 	public class Ghost extends AbstractEntity
 	{
 		/** Ghost movement speed. */
-		public var MOVE_SPEED		:Number = 35;
+		public var MOVEMENT_SPEED		:Number = 0;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -26,8 +27,8 @@ package com.chrisp.objects.entities
 		public function Ghost()
 		{
 			super("Ghost", 20);
-			this.nAttackPower = 20;
-			this.nValue = 100;
+			//this.nAttackPower = 20;
+			//this.nValue = 100;
 			this._sObjectType = GameObjectType.TYPE_ENEMY;
 		}
 		
@@ -40,6 +41,7 @@ package com.chrisp.objects.entities
 		{
 			super.begin();
 			
+			parseXML();
 			this.bActive = true;
 			this.movementTimer = new Timer(250 + Math.random() * 1000 );
 			this.movementTimer.addEventListener(TimerEvent.TIMER, actionReady);
@@ -69,7 +71,13 @@ package com.chrisp.objects.entities
 		 * Parses relevant information for this object
 		 */
 		override protected function parseXML():void
-		{}
+		{
+			var xConfig:XML = LoaderMax.getContent("xmlConfig");
+			this.MOVEMENT_SPEED = Number(xConfig.gameobjects.ghost.moveSpeed);
+			this.nAttackPower = Number(xConfig.gameobjects.ghost.attackPower);
+			this.nHealth = Number(xConfig.gameobjects.ghost.health);
+			this.nValue = Number(xConfig.gameobjects.ghost.pointValue);
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -93,16 +101,16 @@ package com.chrisp.objects.entities
 		override public function move($target:MovieClip):void
 		{
 			if (this.x < $target.x)
-				this.x += MOVE_SPEED;
+				this.x += MOVEMENT_SPEED;
 				
 			if (this.x > $target.x)
-				this.x -= MOVE_SPEED;
+				this.x -= MOVEMENT_SPEED;
 				
 			if (this.y < $target.y)
-				this.y += MOVE_SPEED;
+				this.y += MOVEMENT_SPEED;
 			
 			if (this.y > $target.y)
-				this.y -= MOVE_SPEED;
+				this.y -= MOVEMENT_SPEED;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

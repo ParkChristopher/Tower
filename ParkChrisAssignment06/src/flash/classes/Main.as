@@ -20,6 +20,8 @@ package
 		public var mcGameScreen		:MovieClip;
 		/** Result Screen */
 		public var mcResultScreen	:MovieClip;
+		/** Credits Screen */
+		public var mcCreditsScreen	:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -34,7 +36,9 @@ package
 			
 			this.mcGameScreen.screenCompleteSignal.add(startResults);
 			this.mcTitleScreen.screenCompleteSignal.add(startGame);
+			this.mcTitleScreen.creditsSignal.add(startCredits);
 			this.mcResultScreen.screenCompleteSignal.add(startTitle);
+			this.mcCreditsScreen.screenCompleteSignal.add(startTitle);
 			
 			init();
 			trace("Main: Initialized.");
@@ -83,6 +87,7 @@ package
 		{
 			this.mcTitleScreen.begin();
 			this.mcResultScreen.end();
+			this.mcCreditsScreen.end();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -106,6 +111,7 @@ package
 		{
 			trace("Main: Return to title clicked. Transitioning to TitleScreen");
 			this.mcResultScreen.end();
+			this.mcCreditsScreen.end();
 			this.mcTitleScreen.begin();
 		}
 		
@@ -121,6 +127,18 @@ package
 			this.mcGameScreen.end();
 			this.mcResultScreen.begin();
 			
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Stops any resources and transitions to CreditsScreen
+		 */
+		public function startCredits():void
+		{
+			trace("Main: TitleScreen ended. Transitioning to CreditsScreen");
+			this.mcTitleScreen.end();
+			this.mcCreditsScreen.begin();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
