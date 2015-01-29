@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <scoring>
+	<initial>0</initial>
+	<multiplier>0.2</multiplier>
+	<highScore></highScore>
+  </scoring>
+  <difficulty>
+	  <healthModifier>0.2</healthModifier>
+  </difficulty>
+  <gameobjects>
+	<hero>
+		<moveSpeed>4</moveSpeed>
+		<health>100</health>
+    </hero>
+	<ghost>
+		<moveSpeed>35</moveSpeed>
+		<health>20</health>
+		<pointValue>100</pointValue>
+		<attackPower>20</attackPower>
+	</ghost>
+	<potion>
+		<pointValue>20</pointValue>
+	</potion>
+	<sword>
+		<attackPower>8</attackPower>
+		<moveSpeed>20</moveSpeed>
+	</sword>
+  </gameobjects>
+</config>

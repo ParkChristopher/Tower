@@ -47,6 +47,8 @@ package com.chrisp.objects.entities
 			this._sObjectType = GameObjectType.TYPE_HERO;
 			addCollidableType(GameObjectType.TYPE_ENEMY);
 			addCollidableType(GameObjectType.TYPE_COLLECTIBLE);
+			
+			moveToStandingN();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -58,9 +60,13 @@ package com.chrisp.objects.entities
 		{
 			super.begin();
 			
-			
-			
 			this.addEventListener(Event.ENTER_FRAME, checkForAction);
+			
+			KeyboardManager.instance.addKeyUpListener(KeyCode.W, moveToStandingN);
+			KeyboardManager.instance.addKeyUpListener(KeyCode.A, moveToStandingW);
+			KeyboardManager.instance.addKeyUpListener(KeyCode.S, moveToStandingS);
+			KeyboardManager.instance.addKeyUpListener(KeyCode.D, moveToStandingE);
+			
 			KeyboardManager.instance.addKeyDownListener(KeyCode.RIGHT, attackRight);
 			KeyboardManager.instance.addKeyDownListener(KeyCode.LEFT, attackLeft);
 			KeyboardManager.instance.addKeyDownListener(KeyCode.UP, attackUp);
@@ -82,10 +88,17 @@ package com.chrisp.objects.entities
 			super.end();
 			
 			this.removeEventListener(Event.ENTER_FRAME, checkForAction);
+			
+			KeyboardManager.instance.removeKeyUpListener(KeyCode.W, moveToStandingN);
+			KeyboardManager.instance.removeKeyUpListener(KeyCode.A, moveToStandingW);
+			KeyboardManager.instance.removeKeyUpListener(KeyCode.S, moveToStandingS);
+			KeyboardManager.instance.removeKeyUpListener(KeyCode.D, moveToStandingE);
+			
 			KeyboardManager.instance.removeKeyDownListener(KeyCode.RIGHT, attackRight);
 			KeyboardManager.instance.removeKeyDownListener(KeyCode.LEFT, attackLeft);
 			KeyboardManager.instance.removeKeyDownListener(KeyCode.UP, attackUp);
 			KeyboardManager.instance.removeKeyDownListener(KeyCode.DOWN, attackDown);
+			
 			this.invulnerabilityTimer.stop();
 			this.invulnerabilityTimer.removeEventListener(TimerEvent.TIMER, becomeVulnerable);
 			this.bActive = false;
@@ -105,6 +118,31 @@ package com.chrisp.objects.entities
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
+		 * Moves to a standing animation when a movement key is released
+		 */
+		public function moveToStandingN():void
+		{
+			this.gotoAndStop("standN");
+		}
+		
+		public function moveToStandingS():void
+		{
+			this.gotoAndStop("standS");
+		}
+		
+		public function moveToStandingE():void
+		{
+			this.gotoAndStop("standE");
+		}
+		
+		public function moveToStandingW():void
+		{
+			this.gotoAndStop("standW");
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
 		 * Checks for events from the player.
 		 * 
 		 * @param	$e	ENTER_FRAME event.
@@ -112,22 +150,34 @@ package com.chrisp.objects.entities
 		public function checkForAction($e:Event):void
 		{
 			if (KeyboardManager.instance.isKeyDown(KeyCode.D))
+			{
+				if (this.currentLabel != "walkEast" && !KeyboardManager.instance.isKeyDown(KeyCode.S))
+					this.gotoAndPlay("walkEast");
+					
 				moveRight();
-				
+			}
 			if (KeyboardManager.instance.isKeyDown(KeyCode.A))
-				moveLeft();
+			{
+				if (this.currentLabel != "walkWest" && !KeyboardManager.instance.isKeyDown(KeyCode.S))
+					this.gotoAndPlay("walkWest");
 				
+				moveLeft();
+			}	
 			if (KeyboardManager.instance.isKeyDown(KeyCode.W))
 			{
-				trace("walk");
-				//this.gotoAndPlay("walkNorth");
-				//this.walkNorth.play();
+				
+				if (this.currentLabel != "walkNorth" && !KeyboardManager.instance.isKeyDown(KeyCode.A) && !KeyboardManager.instance.isKeyDown(KeyCode.D))
+					this.gotoAndPlay("walkNorth");
+					
 				moveUp();
 			}	
 			if (KeyboardManager.instance.isKeyDown(KeyCode.S))
-				moveDown();
+			{
+				if (this.currentLabel != "walkSouth")
+					this.gotoAndPlay("walkSouth");
 				
-			
+				moveDown();
+			}
 		}
 			
 		/* ---------------------------------------------------------------------------------------- */
@@ -165,7 +215,7 @@ package com.chrisp.objects.entities
 		{
 			if (this.y - (this.height * 0.5) <= 0)
 				return;
-			
+				
 			this.y -= this.MOVEMENT_SPEED;
 		}
 		
@@ -263,7 +313,8 @@ package com.chrisp.objects.entities
 			{
 				if (!this.bActive)
 					return;
-					
+				
+				flicker(this, 0.05, 25);
 				this.nHealth -= $object.nAttackPower;
 				this.healthUpdateSignal.dispatch(this.nHealth);
 				this.resetMultiplierSignal.dispatch();
