@@ -178,7 +178,7 @@
 		 */
 		public function initEnemy($enemy:AbstractEntity):void
 		{
-			$enemy.readyToMoveSignal.add(dispatchTarget);
+			$enemy.readyToMoveSignal.add(targetRequest);
 			$enemy.x = Math.random() * this.stage.stageWidth;
 			$enemy.y = Math.random() * this.stage.stageHeight * 0.45;
 		}
@@ -193,7 +193,7 @@
 		public function spawnEnemy($e:TimerEvent):void
 		{
 			
-			var ghost :Ghost = new Ghost();
+			var ghost :Ghost = new Ghost(this.mcHero);
 			
 			initEnemy(ghost);
 			CollisionManager.instance.add(ghost);
@@ -265,13 +265,12 @@
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Dispatches a target for the enemy to move to
-		 * 
-		 * @param	$enemy Enemy that wants the target.
+		 * Responds to a game objects request for the heros information.
+		 * @param	$object the object requesting a target
 		 */
-		public function dispatchTarget($enemy:AbstractEntity):void
+		public function targetRequest($object:AbstractGameObject):void
 		{
-			$enemy.move(mcHero);
+			$object.currentTarget = this.mcHero;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -342,6 +341,10 @@
 		{
 			var objectIndex :int = $objectArray.indexOf($object);
 			
+			//Debug line.
+			if ($object == null)
+				return;
+			
 			if (objectIndex >= 0)
 				{
 					$object.end();
@@ -351,7 +354,6 @@
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
-		
 	}
 }
 

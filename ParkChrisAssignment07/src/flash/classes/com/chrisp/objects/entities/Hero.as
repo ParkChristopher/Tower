@@ -87,6 +87,7 @@ package com.chrisp.objects.entities
 		{
 			super.end();
 			
+			this.stop();
 			this.removeEventListener(Event.ENTER_FRAME, checkForAction);
 			
 			KeyboardManager.instance.removeKeyUpListener(KeyCode.W, moveToStandingN);

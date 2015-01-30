@@ -5,6 +5,7 @@ package com.chrisp.objects.entities
 	import com.greensock.*;
 	import com.greensock.easing.*;
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import com.greensock.loading.LoaderMax;
@@ -24,12 +25,11 @@ package com.chrisp.objects.entities
 		/**
 		 * Constructs the Ghost object.
 		 */
-		public function Ghost()
+		public function Ghost($currentTarget:AbstractGameObject)
 		{
 			super("Ghost", 20);
-			//this.nAttackPower = 20;
-			//this.nValue = 100;
 			this._sObjectType = GameObjectType.TYPE_ENEMY;
+			this._currentTarget = $currentTarget;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -43,11 +43,14 @@ package com.chrisp.objects.entities
 			
 			parseXML();
 			this.bActive = true;
+			this.addEventListener(Event.ENTER_FRAME, determineAnimation);
+			
 			this.movementTimer = new Timer(250 + Math.random() * 1000 );
 			this.movementTimer.addEventListener(TimerEvent.TIMER, actionReady);
 			this.movementTimer.start();
 			TweenMax.to(this, 2, {glowFilter:{color:0x9933cc, alpha:1, blurX:15, blurY:20}, yoyo:true, repeat:-1});
 			
+			startFlicker();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -59,9 +62,12 @@ package com.chrisp.objects.entities
 		{
 			super.end();
 			
+			this.stop();
 			this.bActive = false;
+			
 			this.movementTimer.stop();
 			this.movementTimer.removeEventListener(TimerEvent.TIMER, actionReady);
+			this.removeEventListener(Event.ENTER_FRAME, determineAnimation);
 			TweenMax.killTweensOf(this);
 		}
 		
@@ -82,6 +88,16 @@ package com.chrisp.objects.entities
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
+		 * starts ghost movement flicker
+		 */
+		protected function startFlicker():void
+		{
+			flicker(this, 1.5, 50);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
 		 * Signals to GameScreen that it's ready to move.
 		 * 
 		 * @param	$e TimerEvent
@@ -89,6 +105,7 @@ package com.chrisp.objects.entities
 		public function actionReady($e:TimerEvent):void
 		{	
 			this.readyToMoveSignal.dispatch(this);
+			move(_currentTarget);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -99,18 +116,95 @@ package com.chrisp.objects.entities
 		 * @param	$target MovieClip.
 		 */
 		override public function move($target:MovieClip):void
-		{
+		{	
 			if (this.x < $target.x)
+			{
 				this.x += MOVEMENT_SPEED;
-				
+			}
+			
 			if (this.x > $target.x)
+			{
 				this.x -= MOVEMENT_SPEED;
-				
+			}
+			
 			if (this.y < $target.y)
+			{
 				this.y += MOVEMENT_SPEED;
+			}
 			
 			if (this.y > $target.y)
+			{
 				this.y -= MOVEMENT_SPEED;
+			}
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * determines the direction that most likely faces the hero and calls
+		 * to be animated in that direction
+		 * 
+		 * @param	$e ENTER_FRAME event.
+		 */
+		protected function determineAnimation($e:Event):void
+		{
+			var distX				:int;
+			var distY				:int;
+			var verticleFacing		:String;
+			var horizontalFacing	:String;
+			
+			distX = this.x - _currentTarget.x;
+			distY = this.y - _currentTarget.y;
+			
+			if (distX < 0)
+				horizontalFacing = "right";
+			else
+				horizontalFacing = "left";
+				
+			if (distY < 0)
+				verticleFacing = "down";
+			else
+				verticleFacing = "up";
+			
+			if (Math.abs(distX) > Math.abs(distY))
+				animate(horizontalFacing);
+			else
+				animate(verticleFacing);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Plays the animation associated with the given direction.
+		 * 
+		 * @param	$direction animation direction to play.
+		 */
+		protected function animate($direction:String):void
+		{
+			if ($direction == "left")
+			{
+				if (this.currentLabel != "walkWest")
+					this.gotoAndPlay("walkWest");
+			}
+			
+			if ($direction == "right")
+			{
+				if (this.currentLabel != "walkEast")
+					this.gotoAndPlay("walkEast");
+			}
+			
+			if ($direction == "up")
+			{
+				if (this.currentLabel != "walkNorth")
+					this.gotoAndPlay("walkNorth");
+			}
+			
+			if ($direction == "down")
+			{
+				if (this.currentLabel != "walkSouth")
+					this.gotoAndPlay("walkSouth");
+			}
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

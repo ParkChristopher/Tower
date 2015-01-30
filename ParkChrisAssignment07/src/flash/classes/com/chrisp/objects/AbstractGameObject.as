@@ -34,6 +34,8 @@ package com.chrisp.objects
 		protected var _aCanCollideWith	:Array = new Array();
 		/** Signals for this object to be cleaned up*/
 		public var cleanupSignal		:Signal = new Signal(AbstractGameObject);
+		/** The objects target if any. */
+		protected var _currentTarget		:AbstractGameObject;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -123,6 +125,26 @@ package com.chrisp.objects
 		protected function stopFlicker($mc:MovieClip, $nDuration:Number = 0.25):void
 		{
 			TweenMax.to($mc, $nDuration, { alpha:1 } );
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Get or set the target for this object.
+		 *
+		 * @param	$target	The new target of this object
+		 * @return			The target of this object
+		 */
+		public function get currentTarget():AbstractGameObject
+		{
+			return this._currentTarget;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		public function set currentTarget($target:AbstractGameObject):void
+		{
+			this._currentTarget = $target;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
