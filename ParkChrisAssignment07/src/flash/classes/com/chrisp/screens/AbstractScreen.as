@@ -26,20 +26,19 @@ package com.chrisp.screens
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Relinquishes all memory used by this object.
+		 * Initializes this screen.
 		 */
-		public function destroy():void
+		public function begin():void
 		{
-			while (this.numChildren > 0)
-				this.removeChildAt(0);
+			show();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Initializes this screen.
+		 * Shows the screen
 		 */
-		public function begin():void
+		public function show():void
 		{
 			this.visible = true;
 		}
@@ -51,7 +50,28 @@ package com.chrisp.screens
 		 */
 		public function end():void
 		{
+			hide();
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Hides the screen
+		 */
+		public function hide():void
+		{
 			this.visible = false;
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Relinquishes all memory used by this object.
+		 */
+		public function destroy():void
+		{
+			while (this.numChildren > 0)
+				this.removeChildAt(0);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

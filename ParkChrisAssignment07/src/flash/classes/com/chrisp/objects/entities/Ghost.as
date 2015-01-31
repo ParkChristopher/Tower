@@ -4,11 +4,11 @@ package com.chrisp.objects.entities
 	import com.chrisp.objects.AbstractGameObject;
 	import com.greensock.*;
 	import com.greensock.easing.*;
+	import com.greensock.loading.LoaderMax;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import com.greensock.loading.LoaderMax;
 	
 	/**
 	 * Dictates the functionality and information for a ghost enemy.

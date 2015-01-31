@@ -35,7 +35,6 @@ package com.chrisp.screens
 			this.mouseEnabled	= true;
 			this.mouseChildren	= true;
 			
-			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -46,6 +45,7 @@ package com.chrisp.screens
 		override public function begin():void
 		{
 			super.begin();
+			
 			this.btCreditsReturn.addEventListener(MouseEvent.CLICK, returnClicked);
 			this.btEmail.addEventListener(MouseEvent.CLICK, emailClicked);
 			
@@ -59,6 +59,7 @@ package com.chrisp.screens
 		override public function end():void
 		{
 			super.end();
+			
 			this.btCreditsReturn.removeEventListener(MouseEvent.CLICK, returnClicked);
 		}
 		

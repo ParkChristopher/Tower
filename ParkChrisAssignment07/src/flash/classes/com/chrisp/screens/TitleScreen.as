@@ -12,7 +12,7 @@ package com.chrisp.screens
 	 * 
 	 * @author Chris Park
 	 */
-	public class TitleScreen extends AbstractScreen
+	public class TitleScreen extends FadeScreen
 	{
 		/** Play Button */
 		public var btPlay 			:SimpleButton;
@@ -45,7 +45,8 @@ package com.chrisp.screens
 		 */
 		override public function begin():void
 		{
-			this.visible = true;
+			super.begin();
+			
 			this.btPlay.addEventListener(MouseEvent.CLICK, playClicked);
 			this.btCredits.addEventListener(MouseEvent.CLICK, creditsClicked);
 			TweenMax.from(mcTower, 3.0, { x:100, ease:Quad.easeOut } );
@@ -59,8 +60,8 @@ package com.chrisp.screens
 		 */
 		override public function end():void
 		{
-			this.visible = false;
-			TweenMax.killTweensOf(this);
+			super.end();
+			//TweenMax.killTweensOf(this);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -72,7 +73,6 @@ package com.chrisp.screens
 		 */
 		private function playClicked($e:MouseEvent):void
 		{
-			this.end();
 			this.screenCompleteSignal.dispatch();
 		}
 		
@@ -85,7 +85,6 @@ package com.chrisp.screens
 		 */
 		private function creditsClicked($e:MouseEvent):void
 		{
-			this.end();
 			this.creditsSignal.dispatch();
 		}
 		

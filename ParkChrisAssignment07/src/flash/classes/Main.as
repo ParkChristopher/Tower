@@ -1,11 +1,15 @@
 package 
 {
+	import com.chrisp.screens.CreditsScreen;
+	import com.chrisp.screens.GameScreen;
+	import com.chrisp.screens.ResultScreen;
+	import com.chrisp.screens.TitleScreen;
+	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
 	import com.natejc.input.KeyboardManager;
-	import flash.display.MovieClip;
 	import com.natejc.utils.StageRef;
-	import com.greensock.events.LoaderEvent;
+	import flash.display.MovieClip;
 	
 	/**
 	 * Drives the project.
@@ -32,7 +36,23 @@ package
 		{
 			KeyboardManager.init(this.stage);
 			StageRef.stage = this.stage;
+			
 			load();
+			init();
+			trace("Main: Initialized.");
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Initializes the game
+		 */
+		protected function init():void
+		{
+			this.mcTitleScreen = new TitleScreen();
+			this.mcGameScreen = new GameScreen();
+			this.mcResultScreen = new ResultScreen();
+			this.mcCreditsScreen = new CreditsScreen();
 			
 			this.mcGameScreen.screenCompleteSignal.add(startResults);
 			this.mcTitleScreen.screenCompleteSignal.add(startGame);
@@ -40,8 +60,17 @@ package
 			this.mcResultScreen.screenCompleteSignal.add(startTitle);
 			this.mcCreditsScreen.screenCompleteSignal.add(startTitle);
 			
-			init();
-			trace("Main: Initialized.");
+			this.stage.addChild(this.mcResultScreen);
+			this.stage.addChild(this.mcGameScreen);
+			this.stage.addChild(this.mcCreditsScreen);
+			this.stage.addChild(this.mcTitleScreen);
+			
+			this.mcCreditsScreen.hide();
+			this.mcResultScreen.hide();
+			this.mcGameScreen.hide();
+			
+			this.mcTitleScreen.begin();
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -81,18 +110,6 @@ package
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Initializes the game
-		 */
-		protected function init():void
-		{
-			this.mcTitleScreen.begin();
-			this.mcResultScreen.end();
-			this.mcCreditsScreen.end();
-		}
-		
-		/* ---------------------------------------------------------------------------------------- */
-		
-		/**
 		 * Stops any resources and transitions to GameScreen.
 		 */
 		public function startGame():void
@@ -110,8 +127,6 @@ package
 		public function startTitle():void
 		{
 			trace("Main: Return to title clicked. Transitioning to TitleScreen");
-			this.mcResultScreen.end();
-			this.mcCreditsScreen.end();
 			this.mcTitleScreen.begin();
 		}
 		
