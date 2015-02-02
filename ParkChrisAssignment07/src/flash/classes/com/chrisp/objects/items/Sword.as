@@ -1,5 +1,7 @@
 package com.chrisp.objects.items
 {
+	import com.greensock.*;
+	import com.greensock.easing.*;
 	import com.chrisp.collision.CollisionManager;
 	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
@@ -171,8 +173,10 @@ package com.chrisp.objects.items
 				if(!this.bActive)
 					return;
 				
-				//flicker($object, 0.05, 25);
 				$object.nHealth -= this.nAttackPower;
+				TweenLite.to($object, .1, { tint:0xffffff } );
+				TweenLite.to($object, .2, { removeTint:true } );
+				
 				
 				if ($object.nHealth <= 0)
 				{

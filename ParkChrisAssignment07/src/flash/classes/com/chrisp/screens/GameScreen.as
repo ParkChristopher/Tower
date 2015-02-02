@@ -1,5 +1,7 @@
 ﻿package com.chrisp.screens
 {
+	import com.greensock.*;
+	import com.greensock.easing.*;
 	import com.chrisp.collision.CollisionManager;
 	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
@@ -8,6 +10,7 @@
 	import com.chrisp.objects.entities.Hero;
 	import com.chrisp.objects.items.Potion;
 	import com.natejc.utils.StageRef;
+	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.utils.Timer;
@@ -18,7 +21,7 @@
 	 * 
 	 * @author Chris Park
 	 */
-	public class GameScreen extends AbstractScreen
+	public class GameScreen extends FadeScreen
 	{
 		
 		/** Hero object. */
@@ -49,6 +52,8 @@
 		public var nHealthMultiplier	:Number = 0;
 		/** Hero's kill count*/
 		public var nKillCount			:Number = 0;
+		/**Controls graphic. */
+		public var mcControls			:MovieClip;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -58,22 +63,32 @@
 		public function GameScreen()
 		{
 			super();
-			this.mouseEnabled	= true;
-			this.mouseChildren	= true;
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
 		/**
-		 * Initializes everything for this object.
+		 * Begins the game screen.
 		 */
 		override public function begin():void
 		{
-			this.visible = true;
-			CollisionManager.instance.reset();
-			CollisionManager.instance.begin();
+			super.begin();
 			
 			parseXML();
+			init();
+			this.mcControls.visible = true;
+			TweenMax.fromTo(mcControls, 5, { alpha:.5 }, { autoAlpha:0, delay:5, ease:Linear.easeNone } );
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		/**
+		 * Handles initialization of gamescreen components
+		 */
+		public function init():void
+		{
+			CollisionManager.instance.reset();
+			CollisionManager.instance.begin();
 			
 			this.txtScore.text = this.nScore.toString();
 			this.aEnemies = new Array();

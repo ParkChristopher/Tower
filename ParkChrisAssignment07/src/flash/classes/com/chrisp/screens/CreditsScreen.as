@@ -13,7 +13,7 @@ package com.chrisp.screens
 	 * 
 	 * @author Chris Park
 	 */
-	public class CreditsScreen extends AbstractScreen
+	public class CreditsScreen extends FadeScreen
 	{
 		/** Returns control to the title screen*/
 		public var btCreditsReturn	:SimpleButton;

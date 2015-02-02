@@ -49,8 +49,10 @@ package com.chrisp.screens
 			
 			this.btPlay.addEventListener(MouseEvent.CLICK, playClicked);
 			this.btCredits.addEventListener(MouseEvent.CLICK, creditsClicked);
-			TweenMax.from(mcTower, 3.0, { x:100, ease:Quad.easeOut } );
-			TweenMax.from(mcClouds, 3.0, { x:700, ease:Quad.easeInOut } );
+			TweenMax.from(mcTower, 1.5, { x:100, ease:Bounce.easeOut } );
+			TweenMax.from(mcClouds, 1.5, { x:700, ease:Quad.easeInOut } );
+			TweenMax.from(btCredits, .8, { x: 0, ease:Bounce.easeOut } );
+			TweenMax.from(btPlay, 1.2, { x: 0, ease:Bounce.easeOut } );
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

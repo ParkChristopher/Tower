@@ -60,9 +60,9 @@ package
 			this.mcResultScreen.screenCompleteSignal.add(startTitle);
 			this.mcCreditsScreen.screenCompleteSignal.add(startTitle);
 			
+			this.stage.addChild(this.mcCreditsScreen);
 			this.stage.addChild(this.mcResultScreen);
 			this.stage.addChild(this.mcGameScreen);
-			this.stage.addChild(this.mcCreditsScreen);
 			this.stage.addChild(this.mcTitleScreen);
 			
 			this.mcCreditsScreen.hide();
@@ -138,7 +138,7 @@ package
 		public function startResults():void
 		{
 			trace("Main: Game ended. Transitioning to ResultScreen");
-			this.mcResultScreen.updateScore(this.mcGameScreen.txtScore.text);
+			this.mcResultScreen.updateScore(this.mcGameScreen.nScore);
 			this.mcGameScreen.end();
 			this.mcResultScreen.begin();
 			

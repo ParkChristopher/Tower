@@ -1,21 +1,32 @@
 package com.chrisp.screens
 {
-	import flash.events.MouseEvent;
-	import flash.text.TextField;
-	import org.osflash.signals.Signal;
+	import com.greensock.*;
+	import com.greensock.easing.*;
+	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
+	import flash.events.MouseEvent;
+	import flash.net.SharedObject;
+	import flash.text.TextField;
 	
 	/**
 	 * Shows relevant results of a play of the game.
 	 * 
 	 * @author Chris Park
 	 */
-	public class ResultScreen extends AbstractScreen
+	public class ResultScreen extends FadeScreen
 	{
+		/**Results screen title */
+		public var mcScoreTitle		:MovieClip;
+		/**High score header graphic. */
+		public var mcHighScore		:MovieClip;
+		/**Current score header graphic. */
+		public var mcCurrentScore	:MovieClip;
 		/** Button to return to the title screen. */
 		public var btReturn			:SimpleButton;
 		/** Ending score display*/
-		public var txtResultScore	:TextField;
+		public var txtScore			:TextField;
+		/** All time high score display. */
+		public var txtHighScore		:TextField;
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -36,8 +47,12 @@ package com.chrisp.screens
 		 */
 		override public function begin():void
 		{
-			this.visible = true;
+			super.begin();
+			
 			this.btReturn.addEventListener(MouseEvent.CLICK, returnToTitle);
+			TweenMax.from(mcHighScore, 1.2, { x:600, ease:Bounce.easeOut } );
+			TweenMax.from(mcCurrentScore, 1, { x:600, ease:Bounce.easeOut } );
+			TweenMax.from(btReturn, 1.5, { y: 0, ease:Bounce.easeOut } );
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -47,7 +62,7 @@ package com.chrisp.screens
 		 */
 		override public function end():void
 		{
-			this.visible = false;
+			super.end();
 			this.btReturn.removeEventListener(MouseEvent.CLICK, returnToTitle);
 		}
 		
@@ -71,9 +86,30 @@ package com.chrisp.screens
 		 * 
 		 * @param	$score	String
 		 */
-		public function updateScore($score:String):void
+		public function updateScore($score:Number):void
 		{
-			this.txtResultScore.text = $score;
+			var nHighScore :Number;
+			var so:SharedObject = SharedObject.getLocal("data");
+			
+			if (so.size == 0)
+			{
+				so.data.highscore = 0;
+			}
+			
+			
+			this.txtScore.text = $score.toString();
+			
+			if (so.data.highscore < $score)
+			{
+				so.data.highscore = $score;
+				this.txtHighScore.text = $score.toString();
+			}
+			else
+			{
+				nHighScore = so.data.highscore;
+				this.txtHighScore.text = nHighScore.toString();
+			}
+			
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

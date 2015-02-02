@@ -27,9 +27,7 @@ package com.chrisp.screens
 		override public function show():void
 		{
 			super.show();
-			
-			TweenMax.fromTo(this, 1, { alpha:0 }, { alpha:1, ease:Linear.easeNone } );
-			trace("In");
+			TweenMax.fromTo(this, .5, { alpha:0 }, { alpha:1, ease:Linear.easeNone } );
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -38,7 +36,6 @@ package com.chrisp.screens
 		{
 			TweenMax.fromTo(this, .5, {alpha:1}, {autoAlpha:0, ease:Linear.easeNone});
 			super.hide();
-			trace("out");
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
