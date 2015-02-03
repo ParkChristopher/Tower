@@ -10,6 +10,7 @@ package
 	import com.natejc.input.KeyboardManager;
 	import com.natejc.utils.StageRef;
 	import flash.display.MovieClip;
+	import treefortress.sound.SoundAS;
 	
 	/**
 	 * Drives the project.
@@ -49,6 +50,8 @@ package
 		 */
 		protected function init():void
 		{
+			initAudio();
+			
 			this.mcTitleScreen = new TitleScreen();
 			this.mcGameScreen = new GameScreen();
 			this.mcResultScreen = new ResultScreen();
@@ -71,6 +74,21 @@ package
 			
 			this.mcTitleScreen.begin();
 			
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		protected function initAudio():void
+		{
+			SoundAS.loadSound("./audio/loops/TitleMusic.mp3", "TitleMusic");
+			SoundAS.loadSound("./audio/loops/GameMusic.mp3", "GameMusic");
+			SoundAS.loadSound("./audio/loops/ResultsMusic.mp3", "ResultsMusic");
+			
+			SoundAS.loadSound("./audio/sfx/ButtonSound.mp3", "ButtonSound");
+			SoundAS.loadSound("./audio/sfx/CollectItemSound.mp3", "CollectItemSound");
+			SoundAS.loadSound("./audio/sfx/GhostDeathSound.mp3", "GhostDeathSound");
+			SoundAS.loadSound("./audio/sfx/HeroDeathSound.mp3", "HeroDeathSound");
+			SoundAS.loadSound("./audio/sfx/SwordThrowSound.mp3", "SwordThrowSound");
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

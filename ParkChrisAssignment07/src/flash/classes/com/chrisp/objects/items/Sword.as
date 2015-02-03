@@ -9,6 +9,7 @@ package com.chrisp.objects.items
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import com.greensock.loading.LoaderMax;
+	import treefortress.sound.SoundAS;
 	
 	/**
 	 * Dicatates behavior of the hero's sword attack
@@ -55,6 +56,8 @@ package com.chrisp.objects.items
 			this.movementTimer = new Timer(30);
 			this.movementTimer.addEventListener(TimerEvent.TIMER, move);
 			this.movementTimer.start();
+			
+			SoundAS.playFx("SwordThrowSound", 1);
 			
 		}
 		/* ---------------------------------------------------------------------------------------- */
@@ -180,6 +183,7 @@ package com.chrisp.objects.items
 				
 				if ($object.nHealth <= 0)
 				{
+					SoundAS.playFx("GhostDeathSound");
 					$object.bActive = false;
 					CollisionManager.instance.remove($object);
 					$object.cleanupSignal.dispatch($object);

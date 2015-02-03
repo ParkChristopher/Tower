@@ -12,6 +12,7 @@ package com.chrisp.objects.entities
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import org.osflash.signals.Signal;
+	import treefortress.sound.SoundAS;
 	
 	//NOTE: Use bActive variable in base class to trigger invulnerability
 	/**
@@ -322,15 +323,18 @@ package com.chrisp.objects.entities
 				becomeInvulnerable();
 				
 				if (this.nHealth <= 0)
+				{
+					SoundAS.playFx("HeroDeathSound");
 					this.heroDiedSignal.dispatch();
-					
+				}	
 			}
 				
 			if ($object.objectType == GameObjectType.TYPE_COLLECTIBLE)
 			{
 				if (!$object.bActive)
 					return;
-					
+				
+				SoundAS.playFx("CollectItemSound");
 				$object.bActive = false;
 				this.nHealth += $object.nValue;
 				this.healthUpdateSignal.dispatch(this.nHealth);

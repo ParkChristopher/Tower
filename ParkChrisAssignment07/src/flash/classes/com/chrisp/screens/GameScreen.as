@@ -15,6 +15,7 @@
 	import flash.text.TextField;
 	import flash.utils.Timer;
 	import com.greensock.loading.LoaderMax;
+	import treefortress.sound.SoundAS;
 	
 	/**
 	 * Controls game flow.
@@ -82,6 +83,17 @@
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		override public function show():void
+		{
+			super.show();
+			
+			SoundAS.fadeTo("GameMusic", 1);
+			SoundAS.playLoop("GameMusic");
+			
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		/**
 		 * Handles initialization of gamescreen components
 		 */
@@ -90,6 +102,7 @@
 			CollisionManager.instance.reset();
 			CollisionManager.instance.begin();
 			
+			this.nKillCount = 0;
 			this.txtScore.text = this.nScore.toString();
 			this.aEnemies = new Array();
 			this.aHeroAttacks = new Array();
@@ -150,6 +163,16 @@
 				this.removeChild(aItems[i]);
 			}
 		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function hide():void
+		{
+			super.hide();
+			
+			SoundAS.fadeTo("GameMusic", 0);
+		}
+		
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -362,9 +385,16 @@
 			
 			if (objectIndex >= 0)
 				{
-					$object.end();
-					this.removeChild($object);
-					$objectArray.splice(objectIndex, 1);
+					try
+					{
+						$object.end();
+						this.removeChild($object);
+						$objectArray.splice(objectIndex, 1);
+					}
+					catch (error:Error)
+					{
+						trace("Main: Child reference Error");
+					}
 				}
 		}
 		

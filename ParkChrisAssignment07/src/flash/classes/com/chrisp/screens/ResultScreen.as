@@ -7,6 +7,7 @@ package com.chrisp.screens
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
 	import flash.text.TextField;
+	import treefortress.sound.SoundAS;
 	
 	/**
 	 * Shows relevant results of a play of the game.
@@ -23,7 +24,7 @@ package com.chrisp.screens
 		public var mcCurrentScore	:MovieClip;
 		/** Button to return to the title screen. */
 		public var btReturn			:SimpleButton;
-		/** Ending score display*/
+		/** Ending score display. */
 		public var txtScore			:TextField;
 		/** All time high score display. */
 		public var txtHighScore		:TextField;
@@ -57,6 +58,16 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		override public function show():void
+		{
+			super.show();
+			
+			SoundAS.fadeTo("ResultsMusic", 1);
+			SoundAS.playLoop("ResultsMusic");
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		/**
 		 * Ends use of this screen.
 		 */
@@ -64,6 +75,15 @@ package com.chrisp.screens
 		{
 			super.end();
 			this.btReturn.removeEventListener(MouseEvent.CLICK, returnToTitle);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function hide():void
+		{
+			super.hide();
+			
+			SoundAS.fadeTo("ResultsMusic", 0);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

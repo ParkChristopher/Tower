@@ -6,6 +6,7 @@ package com.chrisp.screens
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	import org.osflash.signals.Signal;
+	import treefortress.sound.SoundAS;
 	
 	/**
 	 * Controls the game flow and transitions between screens.
@@ -57,13 +58,31 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		override public function show():void
+		{
+			super.show();
+			
+			SoundAS.fadeTo("TitleMusic", 1);
+			SoundAS.playLoop("TitleMusic");
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		/**
 		 * Ends use of this screen.
 		 */
 		override public function end():void
 		{
 			super.end();
-			//TweenMax.killTweensOf(this);
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function hide():void
+		{
+			super.hide();
+			
+			SoundAS.fadeTo("TitleMusic", 0);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

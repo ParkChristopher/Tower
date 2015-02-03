@@ -6,6 +6,7 @@ package com.chrisp.screens
 	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	import flash.net.*;
+	import treefortress.sound.SoundAS;
 
 	
 	/**
@@ -53,6 +54,16 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */		
 		
+			override public function show():void
+		{
+			super.show();
+			
+			SoundAS.fadeTo("ResultsMusic", 1);
+			SoundAS.playLoop("ResultsMusic");
+		}
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
 		/**
 		 * Ends use of this screen.
 		 */
@@ -63,6 +74,15 @@ package com.chrisp.screens
 			this.btCreditsReturn.removeEventListener(MouseEvent.CLICK, returnClicked);
 		}
 		
+		
+		/* ---------------------------------------------------------------------------------------- */
+		
+		override public function hide():void
+		{
+			super.hide();
+			
+			SoundAS.fadeTo("ResultsMusic", 0);
+		}
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
