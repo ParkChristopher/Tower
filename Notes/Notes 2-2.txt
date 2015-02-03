@@ -1,0 +1,111 @@
+Notes 2/2/15
+
+SoundAS API:
+
+Flashkit for sound effects, or bfxr to make your own.
+Audacity for sound editing.
+add however many layers of audio you want
+trim and amplify etc as needed.
+export as mp3 when finished.
+
+Stick to 30 second loops for music tracks.
+
+-to put music in your game-
+
+Timeline Approach:
+
+
+choose sound from properties in a keyframe (on its own layer)
+make sure you have enough frames.
+
+stream makes sure animation is in sync with sound. (good for triggering on specific animation points)
+
+event - not tied to timeline, (don't need frame width for event sounds)
+
+--------
+
+SoundAS
+
+treefortress/sound in main classpath
+
+in main init:
+
+this.initaudio();
+
+///you can export sound files for actionscript///
+
+protected function initaudio()
+{
+	SoundAS.loadSound("./audio/sfc/CoinCollected", "CoinCollected");
+	soundAS.addsound("titleMusic", new titleMusic());
+	//repeat for game music
+
+}
+
+//make audio folder in bin classpath to place externally loaded sound files.
+//you can load files in loadermax and then retrieve them where you would call //new.
+
+goto screen that plays music
+in show
+SoundAS.playloop("titleMusic");
+
+in hide:
+
+soundAS.fadeAllTo("titleMusic", 0);
+
+in gamescreen:
+show:
+
+SoundAS.playloop("GameMusic");
+
+
+
+Mute button:
+
+draw your crap.
+
+mutebutton.as (movieclip),
+
+when clicked fade in or out
+switch visual state
+
+two buttons:
+
+audio on, audio off
+-switch visibility on click
+-save in local shared object last condition.
+
+mutebutton.as
+
+init();
+
+///
+init()
+{
+	var so.SharedObject = SharedObject.getlocal("data")
+	if(so.size == 0)
+	{
+		so.data.audioOn = true;
+	}
+
+	
+	blah blah
+}
+
+set function
+	Sound.AS.fadeMasterTo(0);
+	this.showaudiooffbutton();
+
+(or use boolean) (1) is full volume for fade.
+
+in button visibility function:
+
+this.bt.visible = true;
+
+//remove previous event listener before adding the new one
+this.addeventlistener(mouseclick, this.audioonclickhandler, false, 0, true)
+
+soundAs.mute = boolean value;
+
+everytime set audio is called, so.data.audioOn = value;
+
