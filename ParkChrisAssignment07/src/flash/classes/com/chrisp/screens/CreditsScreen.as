@@ -52,6 +52,9 @@ package com.chrisp.screens
 			
 		}
 		
+		/**
+		 * Shows the screen and initializes any properties associated with the screen starting.
+		 */
 		/* ---------------------------------------------------------------------------------------- */		
 		
 			override public function show():void
@@ -77,6 +80,9 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Hides the screen and performs any actions related to the screen ending.
+		 */
 		override public function hide():void
 		{
 			super.hide();
@@ -91,6 +97,7 @@ package com.chrisp.screens
 		 */
 		public function emailClicked($e:MouseEvent):void
 		{
+			SoundAS.playFx("ButtonSound");
 			navigateToURL(new URLRequest("mailto:christopherpark@eagles.ewu.edu"), "_blank");
 			trace("url call finished");
 		}
@@ -103,6 +110,7 @@ package com.chrisp.screens
 		 */
 		public function returnClicked($e:MouseEvent):void
 		{
+			SoundAS.playFx("ButtonSound");
 			this.end();
 			this.screenCompleteSignal.dispatch();
 		}

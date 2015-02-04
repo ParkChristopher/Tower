@@ -22,8 +22,12 @@ package com.chrisp.screens
 			super();
 			
 		}
+		
 		/* ---------------------------------------------------------------------------------------- */
 	
+		/**
+		 * Shows the screen and initializes any properties associated with the screen starting.
+		 */
 		override public function show():void
 		{
 			super.show();
@@ -32,6 +36,9 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Hides the screen and performs any actions related to the screen ending.
+		 */
 		override public function hide():void
 		{
 			TweenMax.fromTo(this, .5, {alpha:1}, {autoAlpha:0, ease:Linear.easeNone});

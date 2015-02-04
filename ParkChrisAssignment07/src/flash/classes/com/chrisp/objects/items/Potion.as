@@ -21,7 +21,7 @@ package com.chrisp.objects.items
 		public function Potion()
 		{
 			super("Potion");
-			//this.nValue = 50;
+			
 			this.x = Math.random() * StageRef.stage.stageWidth;
 			this.y = Math.random() * StageRef.stage.stageHeight;
 			this._sObjectType = GameObjectType.TYPE_COLLECTIBLE;

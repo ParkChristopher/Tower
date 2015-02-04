@@ -14,7 +14,6 @@ package com.chrisp.objects.entities
 	import org.osflash.signals.Signal;
 	import treefortress.sound.SoundAS;
 	
-	//NOTE: Use bActive variable in base class to trigger invulnerability
 	/**
 	 * Dictates the functionality and information for a hero character
 	 * 
@@ -49,7 +48,7 @@ package com.chrisp.objects.entities
 			addCollidableType(GameObjectType.TYPE_ENEMY);
 			addCollidableType(GameObjectType.TYPE_COLLECTIBLE);
 			
-			moveToStandingN();
+			this.moveToStandingN();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -73,7 +72,7 @@ package com.chrisp.objects.entities
 			KeyboardManager.instance.addKeyDownListener(KeyCode.UP, attackUp);
 			KeyboardManager.instance.addKeyDownListener(KeyCode.DOWN, attackDown);
 			
-			parseXML();
+			this.parseXML();
 			
 			this.invulnerabilityTimer = new Timer(2000);
 			this.invulnerabilityTimer.addEventListener(TimerEvent.TIMER, becomeVulnerable);
@@ -156,14 +155,14 @@ package com.chrisp.objects.entities
 				if (this.currentLabel != "walkEast" && !KeyboardManager.instance.isKeyDown(KeyCode.S))
 					this.gotoAndPlay("walkEast");
 					
-				moveRight();
+				this.moveRight();
 			}
 			if (KeyboardManager.instance.isKeyDown(KeyCode.A))
 			{
 				if (this.currentLabel != "walkWest" && !KeyboardManager.instance.isKeyDown(KeyCode.S))
 					this.gotoAndPlay("walkWest");
 				
-				moveLeft();
+				this.moveLeft();
 			}	
 			if (KeyboardManager.instance.isKeyDown(KeyCode.W))
 			{
@@ -171,14 +170,14 @@ package com.chrisp.objects.entities
 				if (this.currentLabel != "walkNorth" && !KeyboardManager.instance.isKeyDown(KeyCode.A) && !KeyboardManager.instance.isKeyDown(KeyCode.D))
 					this.gotoAndPlay("walkNorth");
 					
-				moveUp();
+				this.moveUp();
 			}	
 			if (KeyboardManager.instance.isKeyDown(KeyCode.S))
 			{
 				if (this.currentLabel != "walkSouth")
 					this.gotoAndPlay("walkSouth");
 				
-				moveDown();
+				this.moveDown();
 			}
 		}
 			
@@ -320,7 +319,7 @@ package com.chrisp.objects.entities
 				this.nHealth -= $object.nAttackPower;
 				this.healthUpdateSignal.dispatch(this.nHealth);
 				this.resetMultiplierSignal.dispatch();
-				becomeInvulnerable();
+				this.becomeInvulnerable();
 				
 				if (this.nHealth <= 0)
 				{

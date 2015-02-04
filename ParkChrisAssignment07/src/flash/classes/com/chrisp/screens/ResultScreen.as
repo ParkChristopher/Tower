@@ -58,6 +58,9 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Shows the screen and initializes any properties associated with the screen starting.
+		 */
 		override public function show():void
 		{
 			super.show();
@@ -79,6 +82,9 @@ package com.chrisp.screens
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Hides the screen and performs any actions related to the screen ending.
+		 */
 		override public function hide():void
 		{
 			super.hide();
@@ -95,6 +101,7 @@ package com.chrisp.screens
 		 */
 		public function returnToTitle($e:MouseEvent):void
 		{
+			SoundAS.playFx("ButtonSound");
 			this.end();
 			this.screenCompleteSignal.dispatch();
 		}

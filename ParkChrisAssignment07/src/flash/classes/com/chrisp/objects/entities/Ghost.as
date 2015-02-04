@@ -41,7 +41,7 @@ package com.chrisp.objects.entities
 		{
 			super.begin();
 			
-			parseXML();
+			this.parseXML();
 			this.bActive = true;
 			this.addEventListener(Event.ENTER_FRAME, determineAnimation);
 			
@@ -50,7 +50,7 @@ package com.chrisp.objects.entities
 			this.movementTimer.start();
 			TweenMax.to(this, 2, {glowFilter:{color:0x9933cc, alpha:1, blurX:15, blurY:20}, yoyo:true, repeat:-1});
 			
-			startFlicker();
+			this.startFlicker();
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */
@@ -105,7 +105,7 @@ package com.chrisp.objects.entities
 		public function actionReady($e:TimerEvent):void
 		{	
 			this.readyToMoveSignal.dispatch(this);
-			move(_currentTarget);
+			this.move(_currentTarget);
 		}
 		
 		/* ---------------------------------------------------------------------------------------- */

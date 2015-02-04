@@ -1,7 +1,5 @@
 ﻿package com.chrisp.screens
 {
-	import com.greensock.*;
-	import com.greensock.easing.*;
 	import com.chrisp.collision.CollisionManager;
 	import com.chrisp.collision.GameObjectType;
 	import com.chrisp.objects.AbstractGameObject;
@@ -9,12 +7,14 @@
 	import com.chrisp.objects.entities.Ghost;
 	import com.chrisp.objects.entities.Hero;
 	import com.chrisp.objects.items.Potion;
+	import com.greensock.*;
+	import com.greensock.easing.*;
+	import com.greensock.loading.LoaderMax;
 	import com.natejc.utils.StageRef;
 	import flash.display.MovieClip;
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
 	import flash.utils.Timer;
-	import com.greensock.loading.LoaderMax;
 	import treefortress.sound.SoundAS;
 	
 	/**
@@ -83,6 +83,9 @@
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Shows the screen and initializes any properties associated with the screen starting.
+		 */
 		override public function show():void
 		{
 			super.show();
@@ -166,6 +169,9 @@
 		
 		/* ---------------------------------------------------------------------------------------- */
 		
+		/**
+		 * Hides the screen and performs any actions related to the screen ending.
+		 */
 		override public function hide():void
 		{
 			super.hide();
